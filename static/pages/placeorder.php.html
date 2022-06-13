@@ -63,17 +63,26 @@
             listGroup[0].appendChild(z);
         }
 
+        function clearCart()
+        {
+            var cart = document.getElementById("cart");
+            console.log(cart)
+            cart.innerHTML = "";
+        }
+
+
     </script>
 </head>
 <body onload="w3.includeHTML();">
     <div w3-include-html="header.html"></div>
     <div class="m-5 py-3 border-bottom">
         <span class="h2">Place Order</span>
-        <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            <a href="#">
+        <a href="#">
+            <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 <span class="text-white">Place</span>
-            </a>
-        </button>
+            </button>
+        </a>
+
         
         <span class="h2 float-end mx-3">
             $1000
@@ -84,9 +93,14 @@
     </div>
     <div class="row w-100" style="height:75vh" style="position:relative" >
         <div class="col-3 h-100 mx-5" style="margin-left:25px">
-            <h3>Shopping cart</h3>
-            <div class="overflow-scroll h-100">
-                <ul class="list-group w-100 ">
+            <div class="d-flex align-content-center justify-content-between mb-3" >
+                <h3>Shopping cart</h3>
+                <button class="btn btn-secondary">
+                    <a href="#" class="text-white text-decoration-none" onclick="clearCart();">Clear</a>
+                </button>
+            </div>
+            <div class="h-100" style="overflow-x:scroll">
+                <ul class="list-group w-100 " id="cart">
                     <li class="list-group-item">
                         <h5 class="card-title">NOVEL NF4091 9”All-way Strong Wind Circulation Fan</h5>
                         <div class="itemid">1000</div>
@@ -110,7 +124,9 @@
                 <h3>Shopping cart</h3>
                 <form class="d-flex" role="search">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
+                    <button class="btn btn-outline-success" type="submit">
+                        <a href="#" class="text-decoration-none">Search</a>
+                    </button>
                 </form>
             </div>
             <div class="row mt-3">
