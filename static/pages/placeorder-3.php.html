@@ -28,25 +28,6 @@
             display:none;
         }
     </style>
-    <script>
-        function showDeliveryPickerForm()
-        {
-            var deliveryPicker = document.getElementsByClassName("delivery")
-            for(var i = 0; i < deliveryPicker.length; i++)
-            {
-                if (deliveryPicker[i].style.display == "none")
-                {
-                    deliveryPicker[i].style.display = "block";
-                }
-                else
-                {
-                    deliveryPicker[i].style.display = "none";
-                }
-            }
-        }
-
-
-    </script>
 </head>
 <body onload="w3.includeHTML();">
     <div w3-include-html="header.html"></div>
@@ -114,21 +95,45 @@
 
         <div class="sub-form border rounded mt-5">
                 <!-- 
+                    1.	Order ID
                     2.	Customer’s Email
-                    3.	Staff ID
-                    4.	Order Date & Time
-                    5.	Delivery Address (optional)
-                    6.	Delivery Date (optional)
+                    3.	Customer’s Name
+                    4.	Customer’s Phone Number
+                    5.	Staff ID
+                    6.	Staff Name
+                    7.	Order Date & Time
+                    8.	Delivery Address
+                    9.	Delivery Date
+                    10.	Item ID
+                    11.	Item Name
+                    12.	Order Quantity
+                    13.	Total Amount
                  -->
 
                 <div class="order-form m-4">
                     <div class="mb-3">
+                        <label for="email" class="form-label">Order ID</label>
+                        <input readonly disabled type="text" class="form-control" value="order132">
+                    </div>
+                    <div class="mb-3">
                         <label for="email" class="form-label">Customer Email</label>
-                        <input disabled readonly type="password" class="form-control" id="email" placeholder="example@domain.com">
+                        <input disabled readonly type="text" class="form-control" id="email" value="example@domain.com">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Customer Name</label>
+                        <input disabled readonly type="text" class="form-control" id="email" value="Mr. Lee">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Customer Phone</label>
+                        <input disabled readonly type="number" class="form-control" id="email" value="24368333">
                     </div>
                     <div class="mb-3">
                         <label for="staticEmail" class="form-label">Staff ID</label>
                         <input type="text" readonly class="form-control" id="staticEmail" value="S0001" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="staticEmail" class="form-label">Staff Name</label>
+                        <input type="text" readonly class="form-control" id="staticEmail" value="Ben Poon" disabled>
                     </div>
                     <div class="mb-3">
                         <label for="staticEmail" class="form-label">Order Date</label>
@@ -138,16 +143,16 @@
                     
                     <div class="mb-3 delivery" id="delivery-picker">
                         <label for="delivery-date" class="form-label">Delivery Date</label>
-                        <input type="date" class="form-control" id="delivery-date">
+                        <input readonly disabled type="date" class="form-control" id="delivery-date" value="2022-06-04">
                     </div>
                     <div class="mb-3 delivery">
                         <label for="delivery-address" class="form-label" >Delivery Address</label>
-                        <input type="text" class="form-control" id="delivery-address" placeholder="1234 Main St">
+                        <input readonly disabled type="text" class="form-control" id="delivery-address" value="120 Tsing Yi Road, · Tsing Yi Island, New Territories">
                     </div>
                 </div>
             </div>
             <div>
-                <button class="btn btn-primary text-white mx-auto text-center float-end mt-5">
+                <button class="btn btn-primary text-white mx-auto text-center float-end mt-5 " style="margin-bottom:80px;">
                     OK
                 </button>
             </div>
