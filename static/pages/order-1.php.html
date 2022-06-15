@@ -57,6 +57,10 @@
                 for (var i = 0; i < editElements.length; i++) {
                     editElements[i].disabled = false;
                     editElements[i].removeAttribute("readonly");
+                    // set focus to the first input
+                    if (i == 0) {
+                        editElements[i].focus();
+                    }
                 }
                 document.getElementById("edit_prompt").innerHTML = "Save";
                 isEdit = true;
@@ -70,6 +74,7 @@
                     editElements[i].removeAttribute("readonly");
                 }
                 document.getElementById("edit_prompt").innerHTML = "Edit";
+                isEdit = false;
 
             }
             
