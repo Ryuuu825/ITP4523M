@@ -28,11 +28,78 @@
             display:none;
         }
     </style>
+    <script>
+        function printReceipt() {
+            // make the print button disappear
+            // make the header and footer disappear
+            var disappearElements = document.getElementsByClassName("disappear-print");
+            for (var i = 0; i < disappearElements.length; i++) {
+                disappearElements[i].style.display = "none";
+            }
+            // expansion the accordion
+            document.getElementsByClassName("accordion-button")[0].click();
+            
+            
+            window.print();
+
+            // wait for the print to finish
+            for (var i = 0; i < disappearElements.length; i++) {
+                disappearElements[i].style.display = "block";
+            }
+        }
+        let isEdit = false;
+
+        function allowEdit() {
+            var editElements = document.getElementsByClassName("edit");
+
+            if (!isEdit)
+            {
+                for (var i = 0; i < editElements.length; i++) {
+                    editElements[i].disabled = false;
+                    editElements[i].removeAttribute("readonly");
+                }
+                document.getElementById("edit_prompt").innerHTML = "Save";
+                isEdit = true;
+            }
+            else 
+            {
+                // send the data to the server
+                alert("Saving...");
+                for (var i = 0; i < editElements.length; i++) {
+                    editElements[i].disabled = true;
+                    editElements[i].removeAttribute("readonly");
+                }
+                document.getElementById("edit_prompt").innerHTML = "Edit";
+
+            }
+            
+        }
+
+       
+    </script>
 </head>
 <body onload="w3.includeHTML();">
-    <div w3-include-html="header.html"></div>
-    <div class="m-5 py-3 border-bottom">
-        <span class="h2">Order Created</span>
+    <div w3-include-html="header.html" class="disappear-print"></div>
+    <div class="m-5 py-3 border-bottom disappear-print">
+        <a href="./order.php.html" class="mx-2">
+            <button class="h2 btn btn-secondary text-white  px-4">
+                Back
+            </button>
+        </a>
+        <button class="h2 btn btn-primary text-white px-3 mx-2" onclick="printReceipt()">
+            print
+        </button>
+        <form action="#" class="d-inline mx-3" method="get" >
+            <button class="h2 btn btn-dark text-white px-3" onclick="allowEdit()">
+                <span id="edit_prompt">Edit</span>
+            </button>
+        </form>
+        <a href="#deleteorder.php">
+            <button class="h2 btn btn-danger text-white px-3">
+                Delete
+            </button>
+        </a>
+        
         
         <span class="h2 float-end mx-3">
             $1000
@@ -42,13 +109,13 @@
         </span>
     </div>
 
-    <div class="w-75 mx-auto">
+    <div class="w-75 mx-auto my-5">
         <div class="accordion" id="accordionExample">
             <div class="accordion-item">
                 <h3 class="accordion-header" id="panelsStayOpen-headingOne">
                   <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
                     <h3>Sales Order Items</h3>
-                    </button>
+                </button>
                 </h3>
                 <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
                   <div class="accordion-body">
@@ -94,6 +161,8 @@
         </div>
 
         <div class="sub-form border rounded mt-5">
+                <h3 class="mx-4 mt-5">Sales Order Details</h3>
+
                 <!-- 
                     1.	Order ID
                     2.	Customer’s Email
@@ -143,22 +212,19 @@
                     
                     <div class="mb-3 delivery" id="delivery-picker">
                         <label for="delivery-date" class="form-label">Delivery Date</label>
-                        <input readonly disabled type="date" class="form-control" id="delivery-date" value="2022-06-04">
+                        <input readonly disabled type="date" class="form-control edit" id="delivery-date" value="2022-06-04">
                     </div>
                     <div class="mb-3 delivery">
                         <label for="delivery-address" class="form-label" >Delivery Address</label>
-                        <input readonly disabled type="text" class="form-control" id="delivery-address" value="120 Tsing Yi Road, · Tsing Yi Island, New Territories">
+                        <input readonly disabled type="text" class="form-control edit" id="delivery-address" value="120 Tsing Yi Road, · Tsing Yi Island, New Territories">
                     </div>
                 </div>
             </div>
-            <div>
-                <a href="#">
-                    <button class="btn btn-primary text-white mx-auto text-center float-end mt-5 " style="margin-bottom:80px;">
-                        OK
-                    </button>
-                </a>
+            <div style="margin-bottom:100px;">
+
             </div>
-    </div>
-    <div w3-include-html="footer.html"></div>
+
+        </div>
+    <div w3-include-html="footer.html" class="disappear-print"></div>
 </body>
 </html>
