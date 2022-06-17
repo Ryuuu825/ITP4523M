@@ -87,19 +87,19 @@
 <body onload="w3.includeHTML();">
     <div w3-include-html="header.html" class="disappear-print"></div>
     <div class="m-5 py-3 border-bottom disappear-print">
-        <a href="./order.php.html" class="btn btn-secondary px-3 mb-2">
+        <a href="./order.php.html" class="btn btn-secondary px-3 mb-2 p-2 rounded shadow">
             Back
         </a>
-        <button class="h2 btn btn-primary text-white px-3 mx-2" onclick="printReceipt()">
+        <button class="h2 btn btn-primary text-white px-3 mx-2 p-2 rounded shadow" onclick="printReceipt()">
             print
         </button>
         <form action="#" class="d-inline mx-3" method="get" >
-            <button class="h2 btn btn-dark text-white px-3 shadow" onclick="allowEdit()">
+            <button class="h2 btn btn-dark text-white px-3 p-2 rounded shadow" onclick="allowEdit()">
                 <span id="edit_prompt">Edit</span>
             </button>
         </form>
         <a href="#deleteorder.php">
-            <button class="h2 btn btn-danger text-white px-3 shadow">
+            <button class="h2 btn btn-danger text-white px-3 p-2 rounded shadow">
                 Delete
             </button>
         </a>
