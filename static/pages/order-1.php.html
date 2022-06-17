@@ -36,8 +36,11 @@
             for (var i = 0; i < disappearElements.length; i++) {
                 disappearElements[i].style.display = "none";
             }
-            // expansion the accordion
-            document.getElementsByClassName("accordion-button")[0].click();
+            // expansion the accordion if it is collapsed
+            var accordion = document.getElementsByClassName("accordion-button")[0];
+            if (accordion.classList.contains("collapsed")) {
+                accordion.click();
+            }
             
             
             window.print();
