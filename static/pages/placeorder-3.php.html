@@ -45,12 +45,12 @@
     <div class="w-75 mx-auto">
         <div class="accordion" id="accordionExample">
             <div class="accordion-item">
-                <h3 class="accordion-header" id="panelsStayOpen-headingOne">
-                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-                    <h3>Sales Order Items</h3>
+                <h3 class="accordion-header" id="header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse" aria-expanded="true" aria-controls="collapse">
+                        <h3>Sales Order Items</h3>
                     </button>
                 </h3>
-                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+                <div id="collapse" class="accordion-collapse collapse show" aria-labelledby="header">
                   <div class="accordion-body">
                     <table class="table table-hover">
                         <thead>
@@ -112,47 +112,45 @@
 
                 <div class="order-form m-4">
                     <div class="mb-3">
-                        <label for="email" class="form-label">Order ID</label>
+                        <label class="form-label">Order ID</label>
                         <input readonly disabled type="text" class="form-control" value="order132">
                     </div>
                     <div class="mb-3">
-                        <label for="email" class="form-label">Customer Email</label>
-                        <input disabled readonly type="text" class="form-control" id="email" value="example@domain.com">
+                        <label class="form-label">Customer Email</label>
+                        <input disabled readonly type="text" class="form-control" value="example@domain.com">
                     </div>
                     <div class="mb-3">
-                        <label for="email" class="form-label">Customer Name</label>
-                        <input disabled readonly type="text" class="form-control" id="email" value="Mr. Lee">
+                        <label class="form-label">Customer Name</label>
+                        <input disabled readonly type="text" class="form-control" value="Mr. Lee">
                     </div>
                     <div class="mb-3">
-                        <label for="email" class="form-label">Customer Phone</label>
-                        <input disabled readonly type="number" class="form-control" id="email" value="24368333">
+                        <label class="form-label">Customer Phone</label>
+                        <input disabled readonly type="number" class="form-control" value="24368333">
                     </div>
                     <div class="mb-3">
-                        <label for="staticEmail" class="form-label">Staff ID</label>
-                        <input type="text" readonly class="form-control" id="staticEmail" value="S0001" disabled>
+                        <label class="form-label">Staff ID</label>
+                        <input type="text" readonly class="form-control"  value="S0001" disabled>
                     </div>
                     <div class="mb-3">
-                        <label for="staticEmail" class="form-label">Staff Name</label>
-                        <input type="text" readonly class="form-control" id="staticEmail" value="Ben Poon" disabled>
+                        <label class="form-label">Staff Name</label>
+                        <input type="text" readonly class="form-control"  value="Ben Poon" disabled>
                     </div>
                     <div class="mb-3">
-                        <label for="staticEmail" class="form-label">Order Date</label>
+                        <label class="form-label">Order Date</label>
                         <input type="text" readonly class="form-control" id="staticEmail" value="Mon Jun 13 2022 05:37:57 GMT+0000" disabled>
                     </div>
-                    <!-- checkbox -->
-                    
                     <div class="mb-3 delivery" id="delivery-picker">
                         <label for="delivery-date" class="form-label">Delivery Date</label>
-                        <input readonly disabled type="date" class="form-control" id="delivery-date" value="2022-06-04">
+                        <input readonly disabled type="date" class="form-control" value="2022-06-04">
                     </div>
                     <div class="mb-3 delivery">
                         <label for="delivery-address" class="form-label" >Delivery Address</label>
-                        <input readonly disabled type="text" class="form-control" id="delivery-address" value="120 Tsing Yi Road, · Tsing Yi Island, New Territories">
+                        <input readonly disabled type="text" class="form-control" value="120 Tsing Yi Road, · Tsing Yi Island, New Territories">
                     </div>
                 </div>
             </div>
             <div>
-                <a href="#">
+                <a href="./placeorder.php.html">
                     <button class="btn btn-primary text-white mx-auto text-center float-end mt-5 " style="margin-bottom:80px;">
                         OK
                     </button>

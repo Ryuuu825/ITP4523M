@@ -1,207 +1,310 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="../../css/bootstrap.css">
-    <link rel="stylesheet" href="../../css/style.css">
-    <script src="../../js/w3.js"></script>
-    <!-- JavaScript Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
-    <script>
-        let onEdit = false;
-        let onSave = false;
-        function editItem()
-        {
-            var textarea = document.getElementsByTagName("textarea");
-            var input = document.getElementsByTagName("input");
-            // get all textarea and input 
-            // remove attribute disabled
-            if (! onEdit)
-            {
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link rel="stylesheet" href="../../css/bootstrap.css" />
+        <link rel="stylesheet" href="../../css/style.css" />
+        <script src="../../js/w3.js"></script>
+        <!-- JavaScript Bundle with Popper -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+            crossorigin="anonymous"
+        ></script>
+        <script>
+            let onEdit = false;
+            let onSave = false;
+            function editItem() {
+                var textarea = document.getElementsByTagName("textarea");
+                var input = document.getElementsByTagName("input");
+                // get all textarea and input
+                // remove attribute disabled
+                if (!onEdit) {
+                    for (var i = 0; i < textarea.length; i++) {
+                        textarea[i].removeAttribute("disabled");
+                    }
+                    for (var i = 0; i < input.length; i++) {
+                        input[i].removeAttribute("disabled");
+                    }
 
-                for(var i = 0; i < textarea.length; i++)
-                {
-                    textarea[i].removeAttribute("disabled");
-                }
-                for(var i = 0; i < input.length; i++)
-                {
-                    input[i].removeAttribute("disabled");
+                    onEdit = true;
+                    document.getElementById("edit").innerHTML = "Save";
+                } else {
+                    onSave = true;
                 }
 
-                onEdit = true;
-                document.getElementById("edit").innerHTML = "Save";
+                if (onSave) {
+                    alert("Saved");
+                    onSave = false;
+                    onEdit = false;
+
+                    for (var i = 0; i < textarea.length; i++) {
+                        textarea[i].setAttribute("disabled", "disabled");
+                    }
+                    for (var i = 0; i < input.length; i++) {
+                        input[i].setAttribute("disabled", "disabled");
+                    }
+                    document.getElementById("edit").innerHTML = "Edit";
+                }
             }
-            else 
-            {
-                onSave = true;
-            }
+        </script>
+    </head>
+    <body onload="w3.includeHTML();">
+        <div class="w-100">
+            <nav
+                class="navbar navbar-expand-lg py-4"
+                style="background-color: #e4e4e4"
+            >
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#">
+                        <img
+                            src="../../assert/main.png"
+                            alt=""
+                            width="30"
+                            height="24"
+                            class="d-inline-block align-text-top"
+                        />
+                        The Better Limited
+                    </a>
+                    <button
+                        class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarNav"
+                        aria-controls="navbarNav"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation"
+                    >
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a
+                                    class="nav-link active text-black"
+                                    aria-current="page"
+                                    href="#"
+                                >
+                                    Items
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a
+                                    class="nav-link text-black"
+                                    href="../placeorder.php.html"
+                                >
+                                    Place Order
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a
+                                    class="nav-link text-black"
+                                    href="../account.php.html"
+                                >
+                                    Accounts
+                                </a>
+                            </li>
+                            <li class="nav-item text-black">
+                                <a
+                                    class="nav-link text-black"
+                                    href="../order.php.html"
+                                >
+                                    Orders
+                                </a>
+                            </li>
+                        </ul>
+                        <span>
+                            <a href="../../index.html" class="nav-link">
+                                <span class="text-black fs-5 mx-3"
+                                    >Staff - Ken</span
+                                >
+                                <span class="text-black">Logout</span>
+                            </a>
+                        </span>
+                    </div>
+                </div>
+            </nav>
+        </div>
 
-            if (onSave)
-            {
-                alert("Saved");
-                onSave = false;
-                onEdit = false;
+        <div class="container mt-5">
+            <div class="d-flex justify-content-between mb-3">
+                <span class="text-primary h1">Goods</span>
+                <a href="./additems.php.html">
+                    <button class="btn btn-primary text-white fs-6 py-3">
+                        Add Item
+                    </button>
+                </a>
+            </div>
 
-                for(var i = 0; i < textarea.length; i++)
-                {
-                    textarea[i].setAttribute("disabled", "disabled");
-                }
-                for(var i = 0; i < input.length; i++)
-                {
-                    input[i].setAttribute("disabled", "disabled");
-                }
-                document.getElementById("edit").innerHTML = "Edit";
-            }
-        }
-    </script>
-</head>
-<body onload="w3.includeHTML();">
-  <div class="w-100">
-    <nav class="navbar navbar-expand-lg py-4" style="background-color:#e4e4e4">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="../../assert/main.png" alt="" width="30" height="24" class="d-inline-block align-text-top">
-                The Better Limited
-            </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav  me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active text-black" aria-current="page" href="#">
-                    Items
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-black" href="../placeorder.php.html">
-                    Place Order
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-black" href="../account.php.html">
-                    Accounts
-                </a>
-              </li>
-              <li class="nav-item text-black">
-                <a class="nav-link text-black" href="../order.php.html">
-                    Orders
-                </a>
-              </li>
-              
-            </ul>
-            <span>
-                <a href="../../index.html" class="nav-link">
-                    <span class="text-black fs-5 mx-3">Staff - Ken</span>
-                    <span class="text-black">Logout</span>
-                </a>
-            </span>
-          </div>
+            <div class="border p-3 rounded border-primary">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Stock</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Detail</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>
+                                NOVEL NF4091 9”All-way Strong Wind Circulation
+                                Fan
+                            </td>
+                            <td>50</td>
+                            <td>$500</td>
+                            <td>
+                                <a
+                                    href=""
+                                    class="link-info"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#item_detail"
+                                    >details</a
+                                >
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>
+                                CS-RZ24YKA 2.5 HP "Inverter" Split Type Heat
+                                Pump Air-Conditioner
+                            </td>
+                            <td>100</td>
+                            <td>$20000</td>
+                            <td>
+                                <a
+                                    href=""
+                                    class="link-info"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#item_detail"
+                                    >details</a
+                                >
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td>QN100B Neo QLED 2K LED LCD TV</td>
+                            <td>80</td>
+                            <td>$13000</td>
+                            <td>
+                                <a
+                                    href=""
+                                    class="link-info"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#item_detail"
+                                    >details</a
+                                >
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">4</th>
+                            <td>M33 5G Smartphone</td>
+                            <td>300</td>
+                            <td>$2000</td>
+                            <td>
+                                <a
+                                    href=""
+                                    class="link-info"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#item_detail"
+                                    >details</a
+                                >
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </nav>
-  </div>
+        <!-- Modal -->
+        <div
+            class="modal fade"
+            id="item_detail"
+            tabindex="-1"
+            aria-labelledby="item_detail_label"
+            aria-hidden="true"
+            style="display: none"
+        >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="item_detail_label">
+                            Goods Detail
+                            <!-- <?php echo $item['name']; ?> -->
+                        </h5>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                        ></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="fs-5">Description :</div>
+                        <textarea class="form-control" disabled>Simple Design with 3D stereo blower Turbo super strong wind up</textarea>
+                        <!-- <?php echo $item['description']; ?> -->
+                    </div>
+                    <div class="modal-body">
+                        <div class="fs-5">Description :</div>
+                        <textarea
+                            class="form-control"
+                            aria-label="With textarea"
+                            disabled
+                        >NOVEL NF4091 9”All-way Strong Wind Circulation Fan
+                      </textarea>
+                        <!-- <?php echo $item['description']; ?> -->
+                    </div>
+                    <!-- <?php echo $item['description']; ?> -->
+                    <div class="modal-body">
+                        <div class="fs-5">Stock :</div>
+                        <input
+                            type="number"
+                            class="form-control"
+                            value="50"
+                            disabled
+                        />
+                        <!-- <?php echo $item['description']; ?> -->
+                    </div>
+                    <div class="modal-body">
+                        <div class="fs-5">Price :</div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">$</span>
+                            <input
+                                type="number"
+                                class="form-control"
+                                disabled
+                                value="500"
+                            />
+                        </div>
+                        <!-- <?php echo $item['description']; ?> -->
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            onclick="editItem(id)"
+                            id="edit"
+                        >
+                            Edit
+                        </button>
+                        <!-- <button type="button" class="btn btn-secondary" onclick="editItem(<?php echo id ?>)">Edit</button> -->
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <div class="container mt-5">
-      <div class="d-flex justify-content-between mb-3">
-        <span class="text-primary h1">Goods</span>
-        <a href="./additems.php.html">
-          <button class="btn btn-primary text-white fs-6 py-3">
-             Add Item
-          </button>
-        </a>
-      </div>
-      
-      <div class="border p-3 rounded border-primary">
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Name</th>
-              <th scope="col">Stock</th>
-              <th scope="col">Price</th>
-              <th scope="col">Detail</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>NOVEL NF4091 9”All-way Strong Wind Circulation Fan</td>
-              <td>50</td>
-              <td>$500</td>
-              <td><a href="" class="link-info" data-bs-toggle="modal" data-bs-target="#exampleModal">details</a></td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>CS-RZ24YKA 2.5 HP "Inverter" Split Type Heat Pump Air-Conditioner</td>
-              <td>100</td>
-              <td>$20000</td>
-              <td><a href="" class="link-info" data-bs-toggle="modal" data-bs-target="#exampleModal">details</a></td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>QN100B Neo QLED 2K LED LCD TV</td>
-              <td>80</td>
-              <td>$13000</td>
-              <td><a href="" class="link-info" data-bs-toggle="modal" data-bs-target="#exampleModal">details</a></td>
-            </tr>
-            <tr>
-              <th scope="row">4</th>
-              <td>M33 5G Smartphone</td>
-              <td>300</td>
-              <td>$2000</td>
-              <td><a href="" class="link-info" data-bs-toggle="modal" data-bs-target="#exampleModal">details</a></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display:none">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">
-             Goods Detail
-            <!-- <?php echo $item['name']; ?> -->
-          </h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <div class="fs-5">Description :</div>
-            <textarea class="form-control" aria-label="With textarea" disabled>Simple Design with 3D stereo blower Turbo super strong wind up</textarea>
-          <!-- <?php echo $item['description']; ?> -->
-        </div>
-        <div class="modal-body">
-            <div class="fs-5">Description :</div>
-            <textarea class="form-control" aria-label="With textarea" disabled>NOVEL NF4091 9”All-way Strong Wind Circulation Fan</textarea>         
-          <!-- <?php echo $item['description']; ?> -->
-        </div>
-            <!-- <?php echo $item['description']; ?> -->
-        <div class="modal-body">
-          <div class="fs-5">Stock :</div>
-            <input type="number" class="form-control" value="50" disabled>
-          <!-- <?php echo $item['description']; ?> -->
-        </div>
-        <div class="modal-body">
-          <div class="fs-5">Price :</div>
-          <div class="input-group mb-3">
-            <span class="input-group-text">$</span>
-            <input type="number" class="form-control" disabled value="500">
-          </div>
-          <!-- <?php echo $item['description']; ?> -->
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" onclick="editItem(id)" id="edit">Edit</button>
-            <!-- <button type="button" class="btn btn-secondary" onclick="editItem(<?php echo id ?>)">Edit</button> -->
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div w3-include-html="../footer.html"></div>
-</body>
+        <div w3-include-html="../footer.html"></div>
+    </body>
 </html>

@@ -38,7 +38,7 @@
             function changeQty(qty, parent) {
                 var qtyNode = parent.getElementsByClassName("qty")[0];
                 var currQty = parseInt(qtyNode.innerHTML);
-                if (currQty + qty > 0)
+                if (currQty + qty > 0) // not allow to be negative or zero
                     qtyNode.innerHTML = currQty + qty;
             }
 
@@ -78,7 +78,9 @@
                     }
                 }).fail(()=>{
                     console.log("error");
-                })
+                }).done(() => {
+                    console.log("success");
+                });
             }
 
             function clearCart() {
@@ -96,8 +98,6 @@
             <a href="#">
                 <button
                     class="btn btn-primary float-end"
-                    data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"
                 >
                     <span class="text-white">Next</span>
                 </button>
@@ -107,7 +107,7 @@
             <span class="h2 float-end mx-3"> Total: </span>
         </div>
         <div class="row w-100" style="height: 75vh" style="position: relative">
-            <div class="col-3 h-100 mx-5" style="margin-left: 25px">
+            <div class="col-3 h-100 mx-5" style="margin-left: 25px;">
                 <div
                     class="d-flex align-content-center justify-content-between mb-3"
                 >
@@ -125,8 +125,7 @@
                     <ul class="list-group w-100" id="cart">
                         <li class="list-group-item">
                             <h5 class="card-title">
-                                NOVEL NF4091 9”All-way Strong Wind Circulation
-                                Fan
+                                NOVEL NF4091 9”All-way Strong Wind Circulation Fan
                             </h5>
                             <div class="itemid">1000</div>
                             <div class="float-end">
@@ -193,7 +192,7 @@
                             <a
                                 href="#"
                                 class="btn btn-primary text-white"
-                                onclick="addToCart('d')"
+                                onclick="addToCart('id')"
                                 >Add to cart</a
                             >
                         </div>
@@ -208,7 +207,7 @@
                             <a
                                 href="#"
                                 class="btn btn-primary text-white"
-                                onclick="addToCart('d')"
+                                onclick="addToCart('id')"
                                 >Add to cart</a
                             >
                         </div>
@@ -223,7 +222,7 @@
                             <a
                                 href="#"
                                 class="btn btn-primary text-white"
-                                onclick="addToCart('d')"
+                                onclick="addToCart('id')"
                                 >Add to cart</a
                             >
                         </div>
@@ -248,15 +247,15 @@
 
         <div
             class="modal fade"
-            id="exampleModal"
+            id="confirm_modal"
             tabindex="-1"
-            aria-labelledby="exampleModalLabel"
+            aria-labelledby="confirm_modal_label"
             aria-hidden="true"
         >
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">
+                        <h5 class="modal-title" id="confirm_modal_label">
                             Do you sure?
                             <!-- <?php echo $item['name']; ?> -->
                         </h5>

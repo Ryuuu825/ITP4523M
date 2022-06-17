@@ -52,12 +52,11 @@
     <div w3-include-html="header.html"></div>
     <div class="m-5 py-3 border-bottom">
         <span class="h2">Place Order</span>
-        <a href="./placeorder-2.php.html">
-            <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <a href="./placeorder-3.php.html">
+            <button class="btn btn-primary float-end">
                 <span class="text-white">Place</span>
             </button>
         </a>
-
         
         <span class="h2 float-end mx-3">
             $1000
@@ -73,14 +72,14 @@
     </a>
 
     <div class="w-75 mx-auto">
-        <div class="accordion" id="accordionExample">
+        <div class="accordion">
             <div class="accordion-item">
-                <h3 class="accordion-header" id="panelsStayOpen-headingOne">
-                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                <h3 class="accordion-header" id="panels-h1">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panels-close" aria-expanded="true" aria-controls="panels-close">
                     <h3>Sales Order Items</h3>
                     </button>
                 </h3>
-                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+                <div id="panels-close" class="accordion-collapse collapse show" aria-labelledby="panels-h1">
                   <div class="accordion-body">
                     <table class="table table-hover">
                         <thead>
@@ -135,29 +134,29 @@
 
                 <div class="mb-3">
                     <label for="email" class="form-label">Customer Email</label>
-                    <input type="email" class="form-control" id="email" placeholder="example@domain.com">
+                    <input type="email" class="form-control" id="email" placeholder="example@domain.com" name="email" required>
                 </div>
                 <div class="mb-3">
                     <label for="staticEmail" class="form-label">Staff ID</label>
-                    <input type="text" readonly class="form-control" id="staticEmail" value="S0001" disabled>
+                    <input type="text" readonly class="form-control" id="staticEmail" value="S0001" disabled name="staff_id">
                 </div>
                 <div class="mb-3">
-                    <label for="staticEmail" class="form-label">Order Date</label>
-                    <input type="text" readonly class="form-control" id="staticEmail" value="Mon Jun 13 2022 05:37:57 GMT+0000" disabled>
+                    <label class="form-label">Order Date</label>
+                    <input type="text" readonly class="form-control" value="Mon Jun 13 2022 05:37:57 GMT+0000" disabled name="order_date">
                 </div>
                 <!-- checkbox -->
                 <div class="custom-control custom-checkbox mb-3" onclick="showDeliveryPickerForm()">
-                    <input type="checkbox" class="custom-control-input" id="customCheck1">
-                    <label class="custom-control-label" for="customCheck1" onclick="showDeliveryPickerForm()">need Delivery?</label>
+                    <input type="checkbox" class="custom-control-input" id="checkbox_delivery">
+                    <label class="custom-control-label" for="checkbox_delivery" onclick="showDeliveryPickerForm()">need Delivery?</label>
                 </div>
 
                 <div class="mb-3 delivery" id="delivery-picker" style="display: none;">
-                    <label for="delivery-date" class="form-label">Delivery Date</label>
-                    <input type="date" class="form-control" id="delivery-date">
+                    <label for="delivery_date" class="form-label">Delivery Date</label>
+                    <input type="date" class="form-control" id="delivery_date" name="delivery_date">
                 </div>
                 <div class="mb-3 delivery" style="display: none;">
-                    <label for="delivery-address" class="form-label" >Delivery Address</label>
-                    <input type="text" class="form-control" id="delivery-address" placeholder="1234 Main St">
+                    <label for="delivery_address" class="form-label" >Delivery Address</label>
+                    <input type="text" class="form-control" id="delivery_address" placeholder="1234 Main St" name="address">
                 </div>
                 
                 <button type="submit" class="btn btn-primary text-white">Submit</button>
