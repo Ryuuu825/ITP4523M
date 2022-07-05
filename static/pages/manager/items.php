@@ -124,30 +124,32 @@
                     $sql = "SELECT * FROM item";
                     $result = mysqli_query($conn, $sql);
                     while ($row = mysqli_fetch_assoc($result)) {
+                        extract($row);
                         echo <<<EOD
                         <tr>
-                          <th scope="row">{$row['itemID']}</th>
-                          <td>{$row['itemName']}</td>
-                          <td>{$row['stockQuantity']}</td>
-                          <td>{$row['price']}</td>
-                          <td><a href="" class="link-info" data-bs-toggle="modal" data-bs-target="#data{$row['itemID']}">details</a></td>
+                          <th scope="row">{$itemID}</th>
+                          <td>{$itemName}</td>
+                          <td>{$stockQuantity}</td>
+                          <td>{$price}</td>
+                          <td><a href="#data" class="link-info" data-bs-toggle="modal" data-bs-target="#data">details</a></td>
                         </tr>
                         EOD;
                     }
+                    mysqli_free_result($result);
                     ?>
                 </tbody>
             </table>
         </div>
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="data<?php echo $row['itemID'];?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="data" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <?php
-                    $sql = "SELECT * FROM item WHERE itemID='<?php echo $itemID?>'";
-                    $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
-                    $rc = mysqli_fetch_assoc($result);
-                    extract($rc);
+                $sql = "SELECT * FROM item WHERE itemID='{$itemID}'";
+                $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+                $rc = mysqli_fetch_assoc($result);
+                extract($rc);
                 echo <<<EOD
                     <div class="modal-header">
                         <h5 class="modal-title" id="item_detail_label">
