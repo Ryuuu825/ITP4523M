@@ -1,4 +1,8 @@
-
+<?php
+    // destroy the session if exists
+    session_start();
+    session_destroy();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,10 +51,20 @@ if ($is_try_login)
             // create a cookie to remember the user's login
             // and hashed username
             $_SESSION["username"] =  hash('sha256' , $username);
+            $_SESSION["staff_name"] = $row["staffName"];
             $_SESSION["position"] = $row["position"];
             
+
+            /*****  for testing purpose 
+            $sql = file_get_contents('createProjectDB.sql');
+            $conn->multi_query($sql);
+            /*      for testing purpose *****/
+
+            mysqli_free_result($result);
+            mysqli_close($conn);
+
             // redirect to the homepage
-            header("Location: ./pages/index.html");
+            header("Location: ./pages/index.php");
 
             exit;
         }
@@ -97,4 +111,3 @@ if ($is_try_login)
         </div>
     </div>
 </body>
-</html>

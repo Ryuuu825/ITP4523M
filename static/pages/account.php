@@ -1,3 +1,9 @@
+<?php 
+    include_once("../php/helper.php");
+    check_is_login();
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,13 +16,24 @@
     <script src="../js/w3.js"></script>
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
       <script>
           let targetId = "";
           function sendDELETE()
           {
-            // get the id from data-bs-whatever
-              alert("Deleted");
+              
+              $.ajax({
+                  url: `../php/account_CURD.php?email=${targetId}`,
+                  type: "DELETE",
+                  data: {
+                      id: targetId
+                  },
+                  success: function(data)
+                  {
+                      window.location.reload();
+                  }
+              });
+
               // close the modal
               $('.modal').modal('toggle');
           }
@@ -28,7 +45,7 @@
       </script>
 </head>
 <body onload="w3.includeHTML();">
-    <div w3-include-html="./header.html"></div>
+    <?php include_once "./header.php"; ?>
 
     <div class="container mt-5">
         <div class="d-flex justify-content-between mb-3">
@@ -48,23 +65,30 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mary</td>
-                <td>mary@gmail.com</td>
-                <td>58674321</td>
-                <td><a href="#" class="link-danger" data-bs-toggle="modal" data-bs-target="#modal" onclick="setId('dkf')">delete</a></td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Tom</td>
-                <td>tom@gmail.com</td>
-                <td>57568291</td>
-                <td>
-                    <a href="https://www.youtube.com" class="link-danger" data-bs-toggle="modal" data-bs-target="#modal" onclick="setId('dkf')">delete
-                    </a>
-                </td>
-              </tr>
+              <?php
+              require_once('../php/conn.php');
+              $conn = get_db_connection();
+              $sql = "SELECT * FROM `Customer`";
+              $result = mysqli_query($conn, $sql);
+              $id = 0 ;
+              while ($row = mysqli_fetch_assoc($result)) {
+                extract($row);
+                echo <<<EOD
+                <tr>
+                  <th scope="row">$id</th>
+                  <td>$customerName</td>
+                  <td>$customerEmail</td>
+                  <td>$phoneNumber</td>
+                  <td><a href="#" class="link-danger" data-bs-toggle="modal" data-bs-target="#modal" onclick="setId('$customerEmail')">delete</a></td>
+                </tr>
+                EOD;
+                $id++;
+              }
+
+
+              mysqli_free_result($result);
+              mysqli_close($conn);
+              ?>
             </tbody>
           </table>
         </div>

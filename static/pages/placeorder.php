@@ -1,3 +1,11 @@
+<?php 
+    include_once("../php/helper.php");
+    check_is_login();
+?>
+<?php 
+    include_once("../php/conn.php");
+    $conn = get_db_connection();
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -35,29 +43,61 @@
             }
         </style>
         <script>
-            function changeQty(qty, parent) {
-                var qtyNode = parent.getElementsByClassName("qty")[0];
-                var currQty = parseInt(qtyNode.innerHTML);
-                if (currQty + qty > 0) // not allow to be negative or zero
-                    qtyNode.innerHTML = currQty + qty;
+            // function changeQty(qty, parent) {
+            //     var qtyNode = parent.getElementsByClassName("qty")[0];
+            //     var currQty = parseInt(qtyNode.innerHTML);
+            //     if (currQty + qty > 0) // not allow to be negative or zero
+            //         qtyNode.innerHTML = currQty + qty;
+            // }
+
+            function changeQty(id , qty)
+            {
+                real_qty = parseInt($("#" + id + "_qty").text()) + parseInt(qty);
+                $("#" + id + "_qty").text(real_qty ); 
+
             }
 
-            function addToCart(itemid) {
+            cart = [];
+            total = 0;
+
+            function addToCart(itemid , item_name , price ) {
+                // calculate the total price
+                curr = $("#price").text();
+                new_price = parseInt(curr) + parseInt(price);
+                $("#price").text(new_price);
+                $("#price_modal").text($("#price").text());
+
+                // check if the item is already in the cart
+                var isInCart = false;
+                for (var i = 0; i < cart.length; i++) {
+                    if (cart[i] == itemid) {
+                        isInCart = true;
+                        break;
+                    }
+                }
+                if (isInCart)
+                {
+                    changeQty(itemid, 1);
+                    return;
+                }
+
+                cart.push(itemid);
+
                 var listGroup = document.getElementsByClassName("list-group");
                 // add item to list-group
                 var item = document.getElementById(itemid);
                 var z = document.createElement("div"); // is a node
                 z.innerHTML = `
                 <li class="list-group-item">
-                    <h5 class="card-title">NOVEL NF4091 9”All-way Strong Wind Circulation Fan</h5>
+                    <h5 class="card-title">${item_name}</h5>
                     <div class="itemid">1000</div>
                     <div class="float-end">
-                        <svg onclick="changeQty(-1, this.parentElement);" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle mx-3 pointer text-primary" viewBox="0 0 16 16">
+                        <svg onclick="changeQty(${itemid} , -1);" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle mx-3 pointer text-primary" viewBox="0 0 16 16">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/> 
                             <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
                         </svg>
-                        <p class="card-text d-inline qty">1</p>
-                        <svg onclick="changeQty(1, this.parentElement);" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle mx-3 pointer text-primary" viewBox="0 0 16 16">
+                        <p class="card-text d-inline qty"  id="${itemid}_qty">1</p>
+                        <svg onclick="changeQty(${itemid} , 1);" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle mx-3 pointer text-primary" viewBox="0 0 16 16">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                             <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                         </svg>
@@ -84,15 +124,16 @@
             }
 
             function clearCart() {
-                var cart = document.getElementById("cart");
-                console.log(cart);
-                cart.innerHTML = "";
+                var cart_ = document.getElementById("cart");
+                cart_.innerHTML = "";
+                cart = [];
+                $("#price").text("0");
             }
         </script>
     </head>
     <body onload="w3.includeHTML();">
         
-        <div w3-include-html="header.html"></div>
+        <?php include "header.php"; ?>
         <div class="m-5 py-3 border-bottom">
             <span class="h2">Place Order</span>
             <a href="#">
@@ -105,7 +146,7 @@
                 </button>
             </a>
 
-            <span class="h2 float-end mx-3"> $1000 </span>
+            <span class="h2 float-end mx-3"> $ <span id="price">0</span> </span>
             <span class="h2 float-end mx-3"> Total: </span>
         </div>
         <div class="row w-100" style="height: 75vh" style="position: relative">
@@ -124,47 +165,6 @@
                 </div>
                 <div class="h-100" style="overflow-x: scroll">
                     <ul class="list-group w-100" id="cart">
-                        <li class="list-group-item">
-                            <h5 class="card-title">
-                                NOVEL NF4091 9”All-way Strong Wind Circulation Fan
-                            </h5>
-                            <div class="itemid">1000</div>
-                            <div class="float-end">
-                                <svg
-                                    onclick="changeQty(-1, this.parentElement);"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="16"
-                                    height="16"
-                                    fill="currentColor"
-                                    class="bi bi-dash-circle mx-3 pointer text-primary"
-                                    viewBox="0 0 16 16"
-                                >
-                                    <path
-                                        d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
-                                    />
-                                    <path
-                                        d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"
-                                    />
-                                </svg>
-                                <p class="card-text d-inline qty">10</p>
-                                <svg
-                                    onclick="changeQty(1, this.parentElement);"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="16"
-                                    height="16"
-                                    fill="currentColor"
-                                    class="bi bi-plus-circle mx-3 pointer text-primary"
-                                    viewBox="0 0 16 16"
-                                >
-                                    <path
-                                        d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
-                                    />
-                                    <path
-                                        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"
-                                    />
-                                </svg>
-                            </div>
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -183,65 +183,39 @@
                         </button>
                     </div>
                 </div>
+
                 <div class="row mt-3">
-                    <div class="card col-4 mx-2 my-2" style="width: 18rem">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                NOVEL NF4091 9”All-way Strong Wind Circulation
-                                Fan
-                            </h5>
-                            <a
-                                href="#"
-                                class="btn btn-primary text-white"
-                                onclick="addToCart('id')"
-                                >Add to cart</a
-                            >
-                        </div>
-                    </div>
 
-                    <div class="card col-4 mx-2 my-2" style="width: 18rem">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                NOVEL NF4091 9”All-way Strong Wind Circulation
-                                Fan
-                            </h5>
-                            <a
-                                href="#"
-                                class="btn btn-primary text-white"
-                                onclick="addToCart('id')"
-                                >Add to cart</a
-                            >
-                        </div>
-                    </div>
+                <?php 
+                    $sql;
 
-                    <div class="card col-4 mx-2 my-2" style="width: 18rem">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                CS-RZ24YKA 2.5 HP "Inverter" Split Type Heat
-                                Pump Air-Conditionere
-                            </h5>
-                            <a
-                                href="#"
-                                class="btn btn-primary text-white"
-                                onclick="addToCart('id')"
-                                >Add to cart</a
-                            >
-                        </div>
-                    </div>
-
-                    <div class="card col-4 mx-2 my-2" style="width: 18rem">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                QN100B Neo QLED 2K LED LCD TV
-                            </h5>
-                            <a
-                                href="#"
-                                class="btn btn-primary text-white"
-                                onclick="addToCart('d')"
-                                >Add to cart</a
-                            >
-                        </div>
-                    </div>
+                    if (isset($_GET["search"])) {
+                        $sql = "SELECT * FROM products WHERE name LIKE '%".$_GET["search"]."%'";
+                    } else {
+                        $sql = "SELECT * FROM `Item`";
+                    }
+                    $res = mysqli_query($conn, $sql);
+                    while($row = mysqli_fetch_assoc($res))
+                    {
+                        $item_name = $row['itemName'];
+                        $item_name =  str_replace("\"", " ", $item_name);
+                        echo <<<EOF
+                            <div class="card col-3 mx-2 my-2" style="width: 18rem">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        {$row['itemName']}
+                                    </h5>
+                                    <a
+                                        href="#"
+                                        class="btn btn-primary text-white"
+                                        onclick="addToCart('{$row['itemID']}' , '$item_name' , '{$row['price']}')"
+                                        >Add to cart</a
+                                    >
+                                </div>
+                            </div>
+                        EOF;
+                    }
+                ?>
                 </div>
             </div>
         </div>
@@ -268,7 +242,7 @@
                         ></button>
                     </div>
                     <div class="modal-body">
-                        <div class="fs-5">Total Price : $1000</div>
+                        <div class="fs-5">Total Price : $ <span id="price_modal">0</span> </div>
                     </div>
                     <div class="modal-footer">
                             <a href="placeorder-2.php.html">
@@ -284,6 +258,7 @@
                 </div>
             </div>
         </div>
+        <div style="height:200px"></div>
         <div w3-include-html="footer.html"></div>
     </body>
 </html>
