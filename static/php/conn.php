@@ -1,6 +1,6 @@
 <?php 
     $host_name = "127.0.0.1";
-    $database = "db_name";
+    $database = "projectdb";
     $user_name = "root";
     $password = "";
 
