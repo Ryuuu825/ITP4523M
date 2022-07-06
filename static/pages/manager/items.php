@@ -72,7 +72,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-black" href="../account.php.html">
+                            <a class="nav-link text-black" href="../account.php">
                                 Accounts
                             </a>
                         </li>

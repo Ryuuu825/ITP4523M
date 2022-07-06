@@ -9,4 +9,16 @@
         // delete the record
         DELETE($table, $id);
     }
+    else if ($_SERVER['REQUEST_METHOD'] == 'PUT')
+    {
+        // get the body of the request
+        // decode the body into a php object
+        $body = json_decode(file_get_contents('php://input'));
+
+        // return the record
+    }
+    else
+    {
+        echo "Invalid request method";
+    }
 ?>

@@ -54,6 +54,15 @@ if ($is_try_login)
             $_SESSION["staff_name"] = $row["staffName"];
             $_SESSION["position"] = $row["position"];
             
+
+            /*****  for testing purpose 
+            $sql = file_get_contents('createProjectDB.sql');
+            $conn->multi_query($sql);
+            /*      for testing purpose *****/
+
+            mysqli_free_result($result);
+            mysqli_close($conn);
+
             // redirect to the homepage
             header("Location: ./pages/index.php");
 

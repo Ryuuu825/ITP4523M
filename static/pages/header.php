@@ -26,7 +26,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-black" href="./order.php.html">
+                <a class="nav-link text-black" href="./order.php">
                     Orders
                 </a>
               </li>

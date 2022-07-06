@@ -36,4 +36,8 @@
         $sql = "DELETE FROM `Customer` WHERE customerEmail = '$email'";
         $result = mysqli_query($conn, $sql);
     }
+
+
+    mysqli_free_result($result);
+    mysqli_close($conn);
 ?>

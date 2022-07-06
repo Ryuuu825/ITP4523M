@@ -1,14 +1,14 @@
 <?php 
-    include_once("../php/conn.php");
-    include_once("../php/helper.php");
-    
-    check_is_login();
-
-    $conn = get_db_connection();
+   
 
     function GETALL($table)
     {
-        global $conn;
+        include_once("../php/conn.php");
+        include_once("../php/helper.php");
+        
+        check_is_login();
+    
+        $conn = get_db_connection();
         $sql = "SELECT * FROM $table";
         $result = mysqli_query($conn, $sql);
         $rows = array();
@@ -16,23 +16,48 @@
         {
             $rows[] = $row;
         }
+
+        mysqli_free_result($result);
+        mysqli_close($conn);
+
         return $rows;
     }
 
     function GET($table, $id)
     {
-        global $conn;
+        include_once("../php/conn.php");
+        include_once("../php/helper.php");
+        
+        check_is_login();
+    
+        $conn = get_db_connection();
         $sql = "SELECT * FROM $table WHERE id = $id";
         $result = mysqli_query($conn, $sql);
         $row = mysqli_fetch_assoc($result);
+
+
+        mysqli_free_result($result);
+        mysqli_close($conn);
+
+
         return $row;
     }
 
     function DELETE($table, $id)
     {
-        global $conn;
+        include_once("../php/conn.php");
+        include_once("../php/helper.php");
+        
+        check_is_login();
+    
+        $conn = get_db_connection();
         $sql = "DELETE FROM $table WHERE id = $id";
         $result = mysqli_query($conn, $sql);
+
+
+        mysqli_free_result($result);
+        mysqli_close($conn);
+        
         return $result;
     }
 
