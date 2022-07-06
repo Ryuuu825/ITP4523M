@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="../../css/bootstrap.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="../../js/w3.js"></script>
+  <!-- JavaScript Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous">
+  </script>
+</head>
+<script>
+  //request get all items from database
+  function getAll() {
+    $.ajax({
+      url: "../../php/itemController.php",
+      type: "GET",
+      dataType: "json",
+      success: function (data) {
+        let body = $("tbody");
+        let code = "";
+        for (let i = 0; i < data.length; i++) {
+          let item = data[i];
+          let id = item.itemID;
+          let name = item.itemName;
+          let desc = item.itemDescription;
+          let qty = item.stockQuantity;
+          let price = item.price;
+          code +=
+            `<tr>
+                <th scope="row">${id}</th>
+                <td>${name}</td>
+                <td>${qty}</td>
+                <td>${price}</td>
+                <td><a href="#" onclick="getByID(${id})" class="link-info" data-bs-toggle="modal" data-bs-target="#data">details</a></td>
+							</tr>`
+        }
+        body.append(code);
+      },
+      error: function (err) {
+        console.log(err);
+      }
+    });
+  }
+
+  function getByID(id) {
+    $.ajax({
+      url: "../../php/itemController.php",
+      type: "GET",
+      dataType: "json",
+      data: {
+        itemID: id
+      },
+      success: function (data) {
+        let item = data;
+        let id = item.itemID;
+        let name = item.itemName;
+        let desc = item.itemDescription;
+        let qty = item.stockQuantity;
+        let price = item.price;
+        $("#data #name").text(name);
+        $("#data #desc").text(desc);
+        $("#data #qty").text(qty);
+        $("#data #price").text(price);
+      },
+      error: function (err) {
+        console.log(err);
+      }
+    });
+  }
+
+  $(document).ready(function () {
+    getAll();
+  });
+
+</script>
+
+<body onload="w3.includeHTML();">
+  <div w3-include-html="../header.html"></div>
+
+  <div class="container mt-5">
+    <div class="d-flex justify-content-between mb-3">
+      <span class="text-primary h1">Goods</span>
+    </div>
+    <div class="border p-3 rounded border-primary">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Stock</th>
+            <th scope="col">Price</th>
+            <th scope="col">Detail</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- Modal -->
+  <div class="modal fade" id="data" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">
+            Goods Details
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="fs-5">Goods Name :</div>
+          <div id="name"></div>
+        </div>
+        <div class="modal-body">
+          <div class="fs-5">Description :</div>
+          <div id="desc"></div>
+        </div>
+        <div class="modal-body">
+          <div class="fs-5">Stock :</div>
+          <div id="qty"></div>
+        </div>
+        <div class="modal-body">
+          <div class="fs-5">Price :</div>
+          <div id="price"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div w3-include-html="../footer.html"></div>
+</body>
+
+</html>
