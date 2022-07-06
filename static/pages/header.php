@@ -21,20 +21,20 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-black" href="./account.php.html">
+                <a class="nav-link text-black" href="./account.php">
                     Accounts
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-black" href="./order.php.html">
+                <a class="nav-link text-black" href="./order.php">
                     Orders
                 </a>
               </li>
               
             </ul>
             <span>
-                <span class="text-black fs-5 mx-3">Staff - Ken</span>
-                <a href="../index.html" class="nav-link d-inline">
+                <span class="text-black fs-5 mx-3"><?php echo $_SESSION['position'] ?> - <?php echo $_SESSION['staff_name'] ?></span>
+                <a href="../login.php" class="nav-link d-inline">
                     <span class="text-black">Logout</span>
                 </a>
             </span>
