@@ -18,19 +18,19 @@
 </head>
 <body onload="w3.includeHTML();">
 
-    <div w3-include-html="./header.html"></div>
+    <?php include_once "./header.php"; ?>
 
     <!-- Welcome Back -->
     <div class="d-flex align-items-center flex-column justify-content-center" style="height:100vh">
-        <h1>Welcome Back! <?php echo $username ?> </h1>
+        <h2>Welcome Back! <?php echo $_SESSION['staff_name'] ?> </h2>
         <div class="list-group w-25 mt-5 mb-5">
-            <a class="list-group-item list-group-item-action" href="#">
+            <a class="list-group-item list-group-item-action" href="./manager/items.php">
                 Item
             </a>
             <a class="list-group-item list-group-item-action" href="./placeorder.php.html">
                 Place Order
             </a>
-            <a class="list-group-item list-group-item-action" href="./account.php.html">
+            <a class="list-group-item list-group-item-action" href="./account.php">
                 Accounts
             </a>
             <a  class="list-group-item list-group-item-action" href="./order.php.html">

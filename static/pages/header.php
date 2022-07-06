@@ -11,7 +11,7 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav  me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active text-black" aria-current="page" href="./manager/items.php.html">
+                <a class="nav-link active text-black" aria-current="page" href="./manager/items.php">
                     Items
                 </a>
               </li>
@@ -21,7 +21,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-black" href="./account.php.html">
+                <a class="nav-link text-black" href="./account.php">
                     Accounts
                 </a>
               </li>
@@ -33,7 +33,7 @@
               
             </ul>
             <span>
-                <span class="text-black fs-5 mx-3">Staff - Ken</span>
+                <span class="text-black fs-5 mx-3"><?php echo $_SESSION['position'] ?> - <?php echo $_SESSION['staff_name'] ?></span>
                 <a href="../login.php" class="nav-link d-inline">
                     <span class="text-black">Logout</span>
                 </a>
