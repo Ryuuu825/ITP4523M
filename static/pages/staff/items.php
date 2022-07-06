@@ -42,16 +42,50 @@
           $result = mysqli_query($conn, $sql);
           while ($row = mysqli_fetch_assoc($result)) {
             extract($row);
-            echo <<<EOD
+          ?>
             <tr>
-              <th scope="row">{$itemID}</th>
-              <td>{$itemName}</td>
-              <td>{$stockQuantity}</td>
-              <td>{$price}</td>
-              <td><a href="" class="link-info" data-bs-toggle="modal" data-bs-target="#exampleModal">details</a></td>
+              <th scope="row"><?php echo $itemID ?></th>
+              <td><?php echo $itemName ?></td>
+              <td><?php echo $stockQuantity ?></td>
+              <td><?php echo $price ?></td>
+              <td><a href="#" data-id="itemID" class="link-info" data-bs-toggle="modal" data-bs-target="#data<?php echo $itemID ?>">details</a></td>
             </tr>
-            EOD;
+
+            <div class="modal fade" id="data<?php echo $itemID ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                      Goods Details
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="fs-5">Goods Name :</div>
+                    <?php echo $itemName ?>
+                  </div>
+                  <div class="modal-body">
+                    <div class="fs-5">Description :</div>
+                    <?php echo $itemDescription ?>
+                  </div>
+                  <div class="modal-body">
+                    <div class="fs-5">Stock :</div>
+                    <?php echo $stockQuantity ?>
+                  </div>
+                  <div class="modal-body">
+                    <div class="fs-5">Price :</div>
+                    <?php echo $price ?>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <?php
           }
+          mysqli_free_result($result);
+          mysqli_close($conn);
           ?>
         </tbody>
       </table>

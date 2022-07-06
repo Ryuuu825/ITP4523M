@@ -9,45 +9,42 @@
     <link rel="stylesheet" href="../../css/bootstrap.css" />
     <link rel="stylesheet" href="../../css/style.css" />
     <script src="../../js/w3.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
     <script>
-        function editItem() {
-            let onEdit = false;
-            let onSave = false;
+        let onEdit = false;
 
-            var textarea = document.getElementsByTagName("textarea");
-            var input = document.getElementsByTagName("input");
+        function editItem() {
             // get all textarea and input
             // remove attribute disabled
             if (!onEdit) {
-                for (var i = 0; i < textarea.length; i++) {
-                    textarea[i].removeAttribute("disabled");
-                }
-                for (var i = 0; i < input.length; i++) {
-                    input[i].removeAttribute("disabled");
-                }
-
-                onEdit = true;
-                document.getElementById("edit").innerHTML = "Save";
+                editableForm();
             } else {
-                onSave = true;
-            }
-
-            if (onSave) {
                 alert("Saved");
-                onSave = false;
-                onEdit = false;
-
-                for (var i = 0; i < textarea.length; i++) {
-                    textarea[i].setAttribute("disabled", "disabled");
-                }
-                for (var i = 0; i < input.length; i++) {
-                    input[i].setAttribute("disabled", "disabled");
-                }
-                document.getElementById("edit").innerHTML = "Edit";
+                resetForm();
             }
         }
+
+        function editableForm() {
+            $("textarea").removeAttr("disabled");
+            $("input").removeAttr("disabled");
+            onEdit = true;
+            $("#edit").html("Save");
+        }
+
+        function resetForm() {
+            onEdit = false;
+            $("textarea").attr("disabled", true);
+            $("input").attr("disabled", true);
+            $("#edit").html("Edit");
+        }
+
+        $(document).ready(function() {
+            $('#closeBtn').click(function() {
+                resetForm();
+            });
+        });
     </script>
 </head>
 
@@ -99,7 +96,7 @@
     <div class="container mt-5">
         <div class="d-flex justify-content-between mb-3">
             <span class="text-primary h1">Goods</span>
-            <a href="./additems.php.html">
+            <a href="./additems.php">
                 <button class="btn btn-primary text-white fs-6 py-3">
                     Add Item
                 </button>
@@ -125,70 +122,66 @@
                     $result = mysqli_query($conn, $sql);
                     while ($row = mysqli_fetch_assoc($result)) {
                         extract($row);
-                        echo <<<EOD
+                    ?>
                         <tr>
-                          <th scope="row">{$itemID}</th>
-                          <td>{$itemName}</td>
-                          <td>{$stockQuantity}</td>
-                          <td>{$price}</td>
-                          <td><a href="#data" class="link-info" data-bs-toggle="modal" data-bs-target="#data">details</a></td>
+                            <th scope="row"><?php echo $itemID ?></th>
+                            <td><?php echo $itemName ?></td>
+                            <td><?php echo $stockQuantity ?></td>
+                            <td><?php echo $price ?></td>
+                            <td><a href="#" data-id="itemID" class="link-info" data-bs-toggle="modal" data-bs-target="#data<?php echo $itemID ?>">details</a></td>
                         </tr>
-                        EOD;
+                        <!-- Modal -->
+                        <div class="modal fade" id="data<?php echo $itemID ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="item_detail_label">
+                                            Goods Detail
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="fs-5">Goods Name :</div>
+                                        <textarea class="form-control" disabled><?php echo $itemName ?></textarea>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="fs-5">Description :</div>
+                                        <textarea class="form-control" disabled><?php echo $itemDescription ?></textarea>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="fs-5">Stock :</div>
+                                        <input type="number" class="form-control" value="<?php echo $stockQuantity ?>" disabled />
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="fs-5">Price :</div>
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text">$</span>
+                                            <input type="number" class="form-control" disabled value="<?php echo $price ?>" />
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" onclick="editItem(<?php echo $itemID ?>)" id="edit">
+                                            Edit
+                                        </button>
+                                        <button type="button" id="closeBtn" class="btn btn-secondary" data-bs-dismiss="modal">
+                                            Close
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php
                     }
                     mysqli_free_result($result);
+                    mysqli_close($conn);
                     ?>
                 </tbody>
             </table>
         </div>
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="data" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <?php
-                $sql = "SELECT * FROM item WHERE itemID='{$itemID}'";
-                $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
-                $rc = mysqli_fetch_assoc($result);
-                extract($rc);
-                echo <<<EOD
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="item_detail_label">
-                            Goods Detail
-                            {$itemName}
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="fs-5">Description :</div>
-                        <textarea class="form-control" disabled>{$itemDescription}</textarea>
-                    </div>
-                    <div class="modal-body">
-                        <div class="fs-5">Stock :</div>
-                        <input type="number" class="form-control" value="{$stockQuantity}" disabled />
-                    </div>
-                    <div class="modal-body">
-                        <div class="fs-5">Price :</div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">$</span>
-                            <input type="number" class="form-control" disabled value="{$price}" />
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" onclick="editItem({$itemID})" id="edit">
-                            Edit
-                        </button>
-                        <!-- <button type="button" class="btn btn-secondary" onclick="editItem(<?php echo id ?>)">Edit</button> -->
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            Close
-                        </button>
-                    </div>
-                EOD;
-                mysqli_free_result($result);
-                mysqli_close($conn);
-                ?>
-            </div>
-        </div>
-    </div>
+
+
 
     <div w3-include-html="../footer.html"></div>
 </body>
