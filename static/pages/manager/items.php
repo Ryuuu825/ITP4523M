@@ -9,11 +9,15 @@
     <link rel="stylesheet" href="../../css/bootstrap.css" />
     <link rel="stylesheet" href="../../css/style.css" />
     <script src="../../js/w3.js"></script>
+    <script src="../../js/Items.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <!-- JavaScript Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous">
+    </script>
     <script>
         let onEdit = false;
+        let itemID = "";
 
         function editItem() {
             // get all textarea and input
@@ -21,30 +25,134 @@
             if (!onEdit) {
                 editableForm();
             } else {
-                alert("Saved");
                 resetForm();
+                updateItem(itemID);
             }
         }
 
         function editableForm() {
-            $("textarea").removeAttr("disabled");
-            $("input").removeAttr("disabled");
+            $("#data").find("textarea").removeAttr("disabled");
+            $("#data").find("input").removeAttr("disabled");
+            $("#data").find("#edit").text("Save");
             onEdit = true;
-            $("#edit").html("Save");
         }
 
         function resetForm() {
+            $("#data").find("textarea").attr("disabled", true);
+            $("#data").find("input").attr("disabled", true);
+            $("#data").find("#edit").text("Edit");
             onEdit = false;
-            $("textarea").attr("disabled", true);
-            $("input").attr("disabled", true);
-            $("#edit").html("Edit");
         }
 
-        $(document).ready(function() {
-            $('#closeBtn').click(function() {
-                resetForm();
-            });
+        $('#data').on('hidden.bs.modal', function () {
+            resetForm();
         });
+
+        $(document).ready(function () {
+            getAll();
+        });
+
+        //request get all items from database
+        function getAll() {
+            $.ajax({
+                url: "../../php/itemController.php",
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    let body = $("tbody");
+                    let code = "";
+                    for (let i = 0; i < data.length; i++) {
+                        let item = data[i];
+                        let id = item.itemID;
+                        let name = item.itemName;
+                        let desc = item.itemDescription;
+                        let qty = item.stockQuantity;
+                        let price = item.price;
+                        code +=
+                            `<tr>
+                                <th scope="row">${id}</th>
+                                <td>${name}</td>
+                                <td>${qty}</td>
+                                <td>${price}</td>
+                                <td><a href="#" onclick="getByID(${id})" class="link-info" data-bs-toggle="modal" data-bs-target="#data">details</a></td>
+                                <td><a href="#" class="link-info" onclick="removeAt(${id})">delete</a></td>
+							</tr>`
+                    }
+                    body.append(code);
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+
+        function getByID(id) {
+            itemID = id;
+            $.ajax({
+                url: "../../php/itemController.php",
+                type: "GET",
+                dataType: "json",
+                data: {
+                    itemID: id
+                },
+                success: function (data) {
+                    let item = data;
+                    let id = item.itemID;
+                    let name = item.itemName;
+                    let desc = item.itemDescription;
+                    let qty = item.stockQuantity;
+                    let price = item.price;
+                    $("#data #name").val(name);
+                    $("#data #desc").val(desc);
+                    $("#data #qty").val(qty);
+                    $("#data #price").val(price);
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+
+        function removeAt(id) {
+            $.ajax({
+                url: `../../php/itemController.php?itemID=${id}`,
+                type: "DELETE",
+                success: function (data) {
+                    if (data == "Success") {
+                        alert("Item deleted");
+                        window.location.reload();
+                    } else {
+                        alert("Failed to delete item");
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+
+        //request to update item data to database
+        function updateItem(id) {
+            $.ajax({
+                url: "../../php/itemController.php",
+                type: "PUT",
+                dataType: "json",
+                data: {
+                    itemID: id,
+                    itemName: $("#data #name").val(),
+                    itemDescription: $("#data #desc").val(),
+                    stockQuantity: $("#data #qty").val(),
+                    price: $("#data #price").val()
+                },
+                success: function (data) {
+                    alert("Item updated");
+                    window.location.reload();
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
     </script>
 </head>
 
@@ -53,10 +161,12 @@
         <nav class="navbar navbar-expand-lg py-4" style="background-color: #e4e4e4">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">
-                    <img src="../../assert/main.png" alt="" width="30" height="24" class="d-inline-block align-text-top" />
+                    <img src="../../assert/main.png" alt="" width="30" height="24"
+                        class="d-inline-block align-text-top" />
                     The Better Limited
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
@@ -92,11 +202,10 @@
             </div>
         </nav>
     </div>
-
-    <div class="container mt-5">
+    <div class="container mt-5" style="margin-bottom: 100px;">
         <div class="d-flex justify-content-between mb-3">
             <span class="text-primary h1">Goods</span>
-            <a href="./additems.php">
+            <a href="./additems.html">
                 <button class="btn btn-primary text-white fs-6 py-3">
                     Add Item
                 </button>
@@ -112,77 +221,61 @@
                         <th scope="col">Stock</th>
                         <th scope="col">Price</th>
                         <th scope="col">Detail</th>
+                        <th scope="col">Delete</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php
-                    require_once('../../php/conn.php');
-                    $conn = get_db_connection();
-                    $sql = "SELECT * FROM item";
-                    $result = mysqli_query($conn, $sql);
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        extract($row);
-                    ?>
-                        <tr>
-                            <th scope="row"><?php echo $itemID ?></th>
-                            <td><?php echo $itemName ?></td>
-                            <td><?php echo $stockQuantity ?></td>
-                            <td><?php echo $price ?></td>
-                            <td><a href="#" data-id="itemID" class="link-info" data-bs-toggle="modal" data-bs-target="#data<?php echo $itemID ?>">details</a></td>
-                        </tr>
-                        <!-- Modal -->
-                        <div class="modal fade" id="data<?php echo $itemID ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="item_detail_label">
-                                            Goods Detail
-                                        </h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="fs-5">Goods Name :</div>
-                                        <textarea class="form-control" disabled><?php echo $itemName ?></textarea>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="fs-5">Description :</div>
-                                        <textarea class="form-control" disabled><?php echo $itemDescription ?></textarea>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="fs-5">Stock :</div>
-                                        <input type="number" class="form-control" value="<?php echo $stockQuantity ?>" disabled />
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="fs-5">Price :</div>
-                                        <div class="input-group mb-3">
-                                            <span class="input-group-text">$</span>
-                                            <input type="number" class="form-control" disabled value="<?php echo $price ?>" />
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" onclick="editItem(<?php echo $itemID ?>)" id="edit">
-                                            Edit
-                                        </button>
-                                        <button type="button" id="closeBtn" class="btn btn-secondary" data-bs-dismiss="modal">
-                                            Close
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <?php
-                    }
-                    mysqli_free_result($result);
-                    mysqli_close($conn);
-                    ?>
                 </tbody>
             </table>
         </div>
     </div>
     <!-- Modal -->
-
-
-
+    <div class="modal fade" id="data" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="item_detail_label">
+                        Goods Detail
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="resetForm();" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="fs-5">Goods Name :</div>
+                    <textarea class="form-control" id="name" required disabled></textarea>
+                </div>
+                <div class="modal-body">
+                    <div class="fs-5">Description :</div>
+                    <textarea class="form-control" id="desc" disabled></textarea>
+                </div>
+                <div class="modal-body">
+                    <div class="fs-5">Stock :</div>
+                    <input type="number" id="qty" class="form-control" required value="" disabled />
+                </div>
+                <div class="modal-body">
+                    <div class="fs-5">Price :</div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">$</span>
+                        <input type="number" id="price" class="form-control" required disabled value="" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="editItem();" id="edit">
+                        Edit
+                    </button>
+                    <button type="button" id="closeBtn" class="btn btn-secondary" onclick="resetForm();" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form id="updateForm" method="post" action="../../php/itemController.php">
+        <input type="hidden" name="itemID" value="">
+        <input type="hidden" name="itemName" value="">
+        <input type="hidden" name="itemDescription" value="">
+        <input type="hidden" name="stockQuantity" value="">
+        <input type="hidden" name="price" value="">
+    </form>
     <div w3-include-html="../footer.html"></div>
 </body>
 
