@@ -1,3 +1,7 @@
+<?php 
+    include_once("../php/helper.php");
+    check_is_login();
+?>
 
 <!DOCTYPE html>
 <html lang="en">

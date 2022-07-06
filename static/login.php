@@ -1,4 +1,8 @@
-
+<?php
+    // destroy the session if exists
+    session_start();
+    session_destroy();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,7 +54,7 @@ if ($is_try_login)
             $_SESSION["position"] = $row["position"];
             
             // redirect to the homepage
-            header("Location: ./pages/index.html");
+            header("Location: ./pages/index.php");
 
             exit;
         }
