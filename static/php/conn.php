@@ -6,6 +6,6 @@
 
     function get_db_connection() {
         global $host_name, $database, $user_name, $password;
-        return mysqli_connect( $host_name, $user_name, $password, $database );
+        return mysqli_connect($host_name, $user_name, $password, $database) ;
     };
 ?>
