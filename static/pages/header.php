@@ -16,7 +16,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-black" href="./placeorder.php.html">
+                <a class="nav-link text-black" href="./placeorder.php">
                     Place Order
                 </a>
               </li>
