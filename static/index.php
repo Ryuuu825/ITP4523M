@@ -33,7 +33,7 @@ if ($is_try_login)
             $conn = get_db_connection();
         }catch(Exception)
         {   
-            redirect("./pages/404.html");
+            internal_server_error("Could not connect to database." , "./pages/500.php");
         }
     ?> -->
     <div class="d-flex align-items-center flex-column justify-content-center" style="height:100vh">
