@@ -12,7 +12,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
 </head>
 <body onload="w3.includeHTML();">
-    <div class="w-100">
+    <div class="w-100 mb-5">
         <nav class="navbar navbar-expand-lg py-4" style="background-color:#e4e4e4">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">
@@ -40,62 +40,57 @@
                     </a>
                   </li>
                   <li class="nav-item text-black">
-                    <a class="nav-link text-black" href="../order.php.html">
+                    <a class="nav-link text-black">
                         Orders
                     </a>
                   </li>
                   
                 </ul>
                 <span>
-                    <a href="../../index.html" class="nav-link">
-                        <span class="text-black fs-5 mx-3">Staff - Ken</span>
+                    <span class="text-black fs-5 mx-3">Staff - Ken</span>
+                    <a href="../../index.html" class="nav-link d-inline">
                         <span class="text-black">Logout</span>
                     </a>
                 </span>
               </div>
             </div>
         </nav>
-    </div>
+      </div>
     <div
         class="d-flex text-center justify-content-center align-content-center flex-column"
-        style="height:70vh"
+        style="height:80vh;"
     >
-        <div>
-            <h1 class="text-center">Created Items !</h1>
+        <div class="mt-5">
+            <h1 class="text-center">Add Items</h1>
         </div>
         <div class="mx-auto mt-5 border rounded p-3 border-3" style="width:40%">
-        <div class="form-group mb-3">
-            <label for="id" class="mb-2">Item ID</label>
-            <input type="text"  disable readonly class="form-control"  value="ID">
-        </div>
-        <div class="form-group mb-3">
-            <label for="itemname" class="mb-2">Item Name</label>
-            <input type="text"  disable readonly class="form-control"  value="The greatest items">
-        </div>
-        <div class="form-group mb-3">
-            <label for="itemprice" class="mb-2">Item Description</label>
-            <input type="text"  disable readonly class="form-control"  value="Description of this items">
-        </div>
-        <div class="form-group mb-3">
-            <label for="qty" class="mb-2">Stock Quantity</label>
-            <input type="number" disable readonly class="form-control" value="123">
-        </div>
-        <div class="form-group">
-            <label for="price" class="mb-2 block">Stock Price</label>
-            <div class="input-group mb-3">
-                <span class="input-group-text">$</span>
-                <input type="number"  disable readonly class="form-control" value="100">
-            </div>
-        </div>
-
-            <a href="./items.php.html">
-                <button class="btn btn-primary">
-                    <span class="text-white">Back</span>
-                </button>
-            </a>
+            <form action="additem-1.php" method="get" >
+                <div class="form-group mb-3">
+                    <label for="itemname" class="mb-2">Item Name</label>
+                    <input type="text" class="form-control" id="itemname" name="name" placeholder="Item Name">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="desc" class="mb-2">Item Description</label>
+                    <textarea class="form-control" placeholder="Description of the product ... " id="desc" name="desc" style="resize:none" rows="5"></textarea>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="qty" class="mb-2">Stock Quantity</label>
+                    <input type="number" class="form-control" id="qty" name="qty" placeholder="Item Price">
+                </div>
+                <div class="form-group">
+                    <label for="itemprice" class="mb-2 block">Price</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">$</span>
+                        <input type="number" class="form-control" name="price" placeholder="price" id="itemprice">
+                    </div>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary text-white">Add Item</button>
+                </div>
+            </form>
         </div>
     </div>
 
-    <div w3-include-html="../footer.html"></div>
+    <div w3-include-html="../footer.html" style="margin-top:200px"></div>
 </body>
 </html>
