@@ -24,18 +24,31 @@
         let staff = [];
         let orders = [];
         let dummyData = [];
+        let selectedMonth = "";
+        let myChart = null;
 
         $(document).ready(
             function () {
-                getByMonth();
+                curMonth = new Date().getMonth();
+                if (curMonth < 10) {
+                    curMonth = "0" + curMonth;
+                }
+                monthStr = new Date().getFullYear + "-" + curMonth;
+                getByMonth(monthStr);
                 $('#datepicker').datepicker({
                     format: "yyyy-mm",
                     viewMode: "months",
                     minViewMode: "months",
                     endDate: "0",
-                }).on('changeMonth', function (e) {
-                    console.log($('#datepicker').date);
-                    getByMonth(e.date.toISOString().substring(0, 7));
+                    autoclose: true,
+                    todayHighlight: true,
+                    orientation: "bottom auto",
+                    todayBtn: "linked",
+                }).on('changeDate', function (e) {
+                    getByMonth(e.format());
+                    selectedMonth = e.format();
+                    $("#orderRecord").css("display", "none");
+                    $(".staff-info").val("");
                 });
             }
         );
@@ -45,7 +58,7 @@
                 "#795548", "#607d8b", "#9e9e9e"
             ];
 
-            let myChart = new Chart("sales", {
+            myChart = new Chart("sales", {
                 type: "doughnut",
                 data: {
                     labels: staff,
@@ -60,7 +73,6 @@
                         position: "bottom",
                     }
                 }
-
             });
             var ctx = document.getElementById("sales").getContext("2d");
             $("#sales").click(
@@ -73,10 +85,10 @@
                         var label = chartData.labels[idx];
                         var value = chartData.datasets[0].data[idx];
                         var infos = $(".staff-info");
-                        infos[1].value = dummyData[idx].staffID;
-                        infos[2].value = dummyData[idx].staffName;
-                        infos[3].value = dummyData[idx].noOfOrders;
-                        infos[4].value = dummyData[idx].totalAmount;
+                        infos[0].value = dummyData[idx].staffID;
+                        infos[1].value = dummyData[idx].staffName;
+                        infos[2].value = dummyData[idx].noOfOrders;
+                        infos[3].value = dummyData[idx].totalAmount;
                     }
                 }
             );
@@ -86,12 +98,14 @@
             var x = document.getElementsByClassName("order")[0];
             if (x.style.display === "none") {
                 x.style.display = "block";
+                getOrders();
             } else {
                 x.style.display = "none";
             }
         }
 
         function getByMonth(month) {
+            selectedMonth = month;
             $.ajax({
                 url: "../../php/MonthlyReport.php",
                 type: "GET",
@@ -112,6 +126,41 @@
                         orders[i] = noOfOrders;
                     }
                     initChart();
+                },
+                error: function (err) {
+                    if (myChart != null) {
+                        myChart.destroy();
+                    }
+                }
+            });
+        }
+
+        function getOrders() {
+            $.ajax({
+                url: "../../php/MonthlyReport.php",
+                type: "GET",
+                dataType: "json",
+                data: {
+                    month: selectedMonth,
+                    staffID: $("#staffID").val()
+                },
+                success: function (data) {
+                    let code = "";
+                    for (let i = 0; i < data.length; i++) {
+                        let orderID = data[i].orderID;
+                        let cusName = data[i].customerName;
+                        let orderDate = data[i].orderDate;
+                        let totalAmount = data[i].totalAmount;
+                        code +=
+                            `<tr>
+                            <th scope="row">${orderID}</th>
+                            <td>${cusName}</td>
+                            <td>${orderDate}</td>
+                            <td>$${totalAmount}</td>
+                            <td><a href="../order_detail.php?id=${orderID}" class="link-info">Detail</a></td>
+                            </tr>`;
+                    }
+                    $("tbody").html(code);
                 },
                 error: function (err) {
                     console.log(err);
@@ -199,7 +248,7 @@
                 <div class="mb-5 row">
                     <label class="col-sm-2 col-form-label">Staff ID</label>
                     <div class="col-sm-10">
-                        <input class="form-control staff-info" type="text" value="" readonly>
+                        <input class="form-control staff-info" id="staffID" type="text" value="" readonly>
                     </div>
                 </div>
                 <div class="mb-5 row">
@@ -228,9 +277,9 @@
                 </div>
             </div>
         </div>
-        <div class="mx-auto order mx-5" style="width: 90%;display: none;margin-bottom: 50px;">
+        <div id="orderRecord" class="mx-auto order mx-5" style="width: 90%;display: none;margin-bottom: 100px;">
             <div class="h2 text-center">
-                Sales
+                Sales Orders
             </div>
             <div>
                 <table class="table table-hover">
@@ -243,20 +292,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mary</td>
-                            <td>Tue Jun 14 2022 19:26:13 GMT+0000</td>
-                            <td>$100</td>
-                            <td><a href="../order-1.php.html" class="link-info">Detail</a></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Tom</td>
-                            <td>Tue Jun 14 2022 19:27:45 GMT+0000</td>
-                            <td>$1892371</td>
-                            <td><a href="../order-1.php.html" class="link-info">Detail</a></td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
