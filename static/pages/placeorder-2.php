@@ -44,7 +44,26 @@
         }
 
         function submitForm() {
-            $("form").submit();
+            if ($("form #cusName").val() == "") {
+                alert("Please enter the customer name.");
+                $("form #cusName").focus();
+                return;
+            } else if ($("form #email").val() == "") {
+                alert("Please enter the customer email.");
+                $("form #cusAddress").focus();
+                return;
+            } else if ($("form #checkbox_delivery").is(":checked") == true) {
+                if ($("form #deliveryDate").val() == "") {
+                    alert("Please enter the delivery date.");
+                    $("form #deliveryDate").focus();
+                    return;
+                }else if ($("form #deliveryAddress").val() == "") {
+                    alert("Please enter the delievry address.");
+                    $("form #deliveryAddress").focus();
+                    return;
+                } 
+            }
+            createOrder();
         }
 
         function createOrder() {
@@ -52,17 +71,20 @@
                 type: "POST",
                 url: "../php/CreateOrder.php",
                 data: {
-                    itemName: itemName,
-                    itemDescription: itemDescription,
-                    stockQuantity: stockQuantity,
-                    price: price
+                    orderItems: $("#orderItems").val(),
+                    orderAmount: $("#orderAmount").val(),
+                    customerName: $("#cusName").val(),
+                    customerEmail: $("#email").val(),
+                    phoneNumber: $("#cusPhone").val(),
+                    deliveryAddress: $("#deliveryAddress").val(),
+                    deliveryDate: $("#deliveryDate").val()
                 },
                 success: function(data) {
                     if (data == "Error") {
                         alert("Create order failed.");
                     } else {
                         alert("Create order successfully.");
-                        window.location.href = "order_detail.php?id=" + data;
+                        window.location.href = "./order_detail.php?id=" + data;
                     }
                 }
             });
@@ -93,8 +115,8 @@
                 $totalAmount = 0.0;
                 foreach ($_POST as $oiID => $qty) {
                     $orderItems[] = array(
-                        "oiID" => $oiID,
-                        "qty" => $qty
+                        "oiID" => (int)$oiID,
+                        "qty" => (int)$qty
                     );
                     $sql = "SELECT price*{$qty} AS `Amount` FROM item WHERE itemId = {$oiID}";
                     $result = mysqli_query($conn, $sql);
@@ -149,15 +171,15 @@
                                 $ois[] = array(
                                     "oiID" => $oiID,
                                     "qty" => $qty,
-                                    "soldPrice" => $row["soldPrice"]
+                                    "soldPrice" => (double)$row["soldPrice"]
                                 );
                                 echo <<<EOD
                                     <tr>
                                     <th scope="row">{$i}</th>
                                     <td>{$row['itemName']}</td>
-                                    <td style="text-align: center;">{$row['price']}</td>
+                                    <td style="text-align: center;">\${$row['price']}</td>
                                     <td style="text-align: center;">{$qty}</td>
-                                    <td style="text-align: center;">{$row['soldPrice']}</td>
+                                    <td style="text-align: center;">\${$row['soldPrice']}</td>
                                     </tr>
                                 EOD;
                             }
@@ -179,8 +201,8 @@
                     5.	Delivery Address (optional)
                     6.	Delivery Date (optional)
                  -->
-                <input type="hidden" name="orderItems" value='<?php echo json_encode($ois); ?>'>
-                <input type="hidden" name="orderAmount" value='<?php echo $totalAmount; ?>'>
+                <input type="hidden" name="orderItems" id="orderItems" value='<?php echo json_encode($ois); ?>'>
+                <input type="hidden" name="orderAmount" id="orderAmount" value='<?php echo $totalAmount; ?>'>
                 <div class="mb-3">
                     <label for="cusName" class="form-label">Customer Name</label>
                     <input type="text" class="form-control" id="cusName" placeholder="e.g Chan Tai Man" name="customerName" required>
@@ -205,11 +227,11 @@
 
                 <div class="mb-3 delivery" id="delivery-picker" style="display: none;">
                     <label for="delivery_date" class="form-label">Delivery Date</label>
-                    <input type="date" class="form-control" id="delivery_date" require name="deliveryDate">
+                    <input type="date" class="form-control" id="deliveryDate" require name="deliveryDate">
                 </div>
                 <div class="mb-3 delivery" style="display: none;">
                     <label for="delivery_address" class="form-label">Delivery Address</label>
-                    <input type="text" class="form-control" id="delivery_address" require placeholder="1234 Main St" name="deliveryAddress">
+                    <input type="text" class="form-control" id="deliveryAddress" require placeholder="1234 Main St" name="deliveryAddress">
                 </div>
             </form>
         </div>

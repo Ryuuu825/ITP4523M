@@ -344,7 +344,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="confirm_modal_label">
-                            Do you sure?
+                            Are you sure?
                         </h5>
                         <button
                             type="button"

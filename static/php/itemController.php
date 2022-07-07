@@ -52,12 +52,12 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
 	if (strlen($_POST['itemName'])> 0 && strlen($_POST['price'])> 0 && strlen($_POST['stockQuantity'])> 0) {
 		// create item
 		extract($_POST);
-		$sql = "SELECT max(itemId)+1 AS 'nextid' FROM item;";
+		$sql = "SELECT max(itemID)+1 AS 'nextid' FROM item;";
     $result = mysqli_query($conn, $sql)
         or die('<div class="error">SQL command fails :<br>' . mysqli_error($conn)) . "</div>";
     $num = mysqli_num_rows($result);
     if ($num == 0) {
-        $sql = "SELECT IFNULL(max(itemId), 0)+1 AS `nextid` FROM item;";
+        $sql = "SELECT IFNULL(max(itemID), 0)+1 AS `nextid` FROM item;";
         $result = mysqli_query($conn, $sql)
             or die('<div class="error">SQL command fails :<br>' . mysqli_error($conn)) . "</div>";
     }
