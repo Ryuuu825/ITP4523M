@@ -43,11 +43,30 @@
             }
         }
 
-        function initOrderItem() {}
+        function submitForm() {
+            $("form").submit();
+        }
 
-        $(document).ready(function() {
-            initOrderItem();
-        });
+        function createOrder() {
+            $.ajax({
+                type: "POST",
+                url: "../php/CreateOrder.php",
+                data: {
+                    itemName: itemName,
+                    itemDescription: itemDescription,
+                    stockQuantity: stockQuantity,
+                    price: price
+                },
+                success: function(data) {
+                    if (data == "Error") {
+                        alert("Create order failed.");
+                    } else {
+                        alert("Create order successfully.");
+                        window.location.href = "order_detail.php?id=" + data;
+                    }
+                }
+            });
+        }
     </script>
     <?php
     include_once("../php/helper.php");
@@ -59,11 +78,9 @@
     <?php include_once "./header.php"; ?>
     <div class="m-5 py-3 border-bottom">
         <span class="h2">Place Order</span>
-        <a href="./placeorder-3.php">
-            <button class="btn btn-primary float-end">
-                <span class="text-white">Place</span>
-            </button>
-        </a>
+        <button class="btn btn-primary float-end" onclick="submitForm();">
+            <span class="text-white">Place</span>
+        </button>
 
         <span class="h2 float-end mx-3">
             <?php
@@ -122,22 +139,27 @@
                             </thead>
                             <tbody>
                             <?php
-
+                            $ois = array();
                             for ($i = 1; $i <= count($orderItems); $i++) {
-                                $oiID = $orderItems[$i-1]["oiID"];
-                                $qty = $orderItems[$i-1]["qty"];
+                                $oiID = $orderItems[$i - 1]["oiID"];
+                                $qty = $orderItems[$i - 1]["qty"];
                                 $sql = "SELECT `itemName`,`price`, price*{$qty}*{$preDiscount} AS `soldPrice` FROM item WHERE itemId = {$oiID}";
                                 $result = mysqli_query($conn, $sql);
                                 $row = mysqli_fetch_assoc($result);
+                                $ois[] = array(
+                                    "oiID" => $oiID,
+                                    "qty" => $qty,
+                                    "soldPrice" => $row["soldPrice"]
+                                );
                                 echo <<<EOD
-                                            <tr>
-                                            <th scope="row">{$i}</th>
-                                            <td>{$row['itemName']}</td>
-                                            <td style="text-align: center;">{$row['price']}</td>
-                                            <td style="text-align: center;">{$qty}</td>
-                                            <td style="text-align: center;">{$row['soldPrice']}</td>
-                                            </tr>
-                                        EOD;
+                                    <tr>
+                                    <th scope="row">{$i}</th>
+                                    <td>{$row['itemName']}</td>
+                                    <td style="text-align: center;">{$row['price']}</td>
+                                    <td style="text-align: center;">{$qty}</td>
+                                    <td style="text-align: center;">{$row['soldPrice']}</td>
+                                    </tr>
+                                EOD;
                             }
                         }
                             ?>
@@ -149,7 +171,7 @@
         </div>
 
         <div class="sub-form border rounded mt-5" style="margin-bottom:100px;">
-            <form class="mx-4 my-5" action="./placeorder-3.php" method="post">
+            <form class="mx-4 my-5" action="../php/CreateOrder.php" method="post">
                 <!-- 
                     2.	Customer’s Email
                     3.	Staff ID
@@ -157,26 +179,23 @@
                     5.	Delivery Address (optional)
                     6.	Delivery Date (optional)
                  -->
-
+                <input type="hidden" name="orderItems" value='<?php echo json_encode($ois); ?>'>
+                <input type="hidden" name="orderAmount" value='<?php echo $totalAmount; ?>'>
                 <div class="mb-3">
-                    <label for="email" class="form-label">Customer Name</label>
-                    <input type="email" class="form-control" id="cusName" placeholder="e.g Chan Tai Man" name="customerName" required>
+                    <label for="cusName" class="form-label">Customer Name</label>
+                    <input type="text" class="form-control" id="cusName" placeholder="e.g Chan Tai Man" name="customerName" required>
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Customer Email</label>
                     <input type="email" class="form-control" id="email" placeholder="example@domain.com" name="customerEmail" required>
                 </div>
                 <div class="mb-3">
-                    <label for="email" class="form-label">Customer Phone</label>
-                    <input type="email" class="form-control" id="cusPhone" placeholder="e.g 12345678" name="phoneNumber" required>
+                    <label for="cusPhone" class="form-label">Customer Phone</label>
+                    <input type="number" class="form-control" id="cusPhone" placeholder="e.g 12345678" name="phoneNumber">
                 </div>
                 <div class="mb-3">
                     <label for="staticEmail" class="form-label">Staff ID</label>
                     <input type="text" readonly class="form-control" id="staticEmail" value="<?php echo $_SESSION['username']; ?>" disabled name="staff_id">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Order Date</label>
-                    <input type="text" readonly class="form-control" value="<?php echo date('Y-m-d H:i:sp'); ?>" disabled name="order_date">
                 </div>
                 <!-- checkbox -->
                 <div class="custom-control custom-checkbox mb-3">
@@ -186,11 +205,11 @@
 
                 <div class="mb-3 delivery" id="delivery-picker" style="display: none;">
                     <label for="delivery_date" class="form-label">Delivery Date</label>
-                    <input type="date" class="form-control" id="delivery_date" name="delivery_date">
+                    <input type="date" class="form-control" id="delivery_date" require name="delivery_date">
                 </div>
                 <div class="mb-3 delivery" style="display: none;">
                     <label for="delivery_address" class="form-label">Delivery Address</label>
-                    <input type="text" class="form-control" id="delivery_address" placeholder="1234 Main St" name="address">
+                    <input type="text" class="form-control" id="delivery_address" require placeholder="1234 Main St" name="address">
                 </div>
             </form>
         </div>
