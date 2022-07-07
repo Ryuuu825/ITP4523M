@@ -73,27 +73,28 @@
 
                 real_qty = parseInt($("#" + id + "_qty").text()) + parseInt(qty);
                 $("#" + id + "_qty").text(real_qty ); 
+                $("#cart_form input[name=" + id + "]").val(real_qty);
             }
 
             cart = [];
             total = 0;
+            total_price = 0;
 
             function addToCart(itemid , item_name , price ) {
                 if (!check_enough_stock(itemid)) 
                     return;
                 
 
-                // calculate the total price
-                oldprice = parseInt($("#price").text());
+                total_price+= parseInt(price);
+                // get the discount from api
                 $.ajax({
-                    url:"http://127.0.0.1:8080/api/discountCalculator?discount="+oldprice,
+                    url:"http://127.0.0.1:8080/api/discountCalculator?discount="+(total_price),
                     type:"GET",
                     dataTpye : "json",
                     crossDomin: true,
                     success:function(data)
                     {
-                        curr = price
-                        new_price = (parseInt(curr) + parseInt(oldprice)) * (1+data.discount);
+                        new_price = (total_price) * (1- data.discount);
                         new_price = Math.floor(new_price * 100) / 100;
                         
                         if (data.discount != 0)
@@ -105,9 +106,7 @@
                         {
                             $("#price").html(new_price);
                         }
-                   
-
-                        $("#price_modal").text($("#price").text());
+                        $("#price_modal").text(new_price);
                     }
                  })
                 
@@ -125,6 +124,7 @@
                     changeQty(itemid, 1);
                     return;
                 }
+                
 
                 cart.push(itemid);
 
@@ -150,6 +150,8 @@
                 </li>
             `;
                 listGroup[0].appendChild(z);
+                // add item to the form cart
+                $("#form_data").append(`<input type='hidden' name='${itemid}'  value='${1}'>`)
             }
 
             function search()
@@ -201,6 +203,26 @@
                 cart_.innerHTML = "";
                 cart = [];
                 $("#price").text("0");
+            }
+
+            function send_request()
+            {
+                // send a post request to the server
+                // and forward to that pages
+
+                // create a form
+                var form = document.createElement("form");
+                form.setAttribute("method", "post");
+                form.setAttribute("action", "../php/cartController.php");
+                // add the cart to the form
+                var cart_ = document.getElementById("cart");
+                var cart_str = cart_.innerHTML;
+                var cart_input = document.createElement("input");
+                cart_input.setAttribute("type", "hidden");
+
+                // send the form to the server
+                form.send();                
+
             }
         </script>
     </head>
@@ -321,15 +343,11 @@
                         <div class="fs-5">Total Price : $ <span id="price_modal">0</span> </div>
                     </div>
                     <div class="modal-footer">
-                            <a href="placeorder-2.php">
-                                <button
-                                    type="button"
-                                    class="btn btn-secondary"
-                                    data-bs-dismiss="modal"
-                                >
-                                    Ok
-                                </button>
-                            </a>
+                        <form action="./placeorder-2.php" method="POST" id="cart_form">
+                            <div class="form-check" id="form_data">
+                                <input type="submit" value="OK" type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
