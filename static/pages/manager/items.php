@@ -13,11 +13,21 @@
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous">
     </script>
-    <link rel="shortcut icon" href="../../main.ico" type="image/x-icon">
+    <script type="text/javascript">
+        <?php
+        session_start();
+        if (empty($_SESSION["username"])) {
+            header("Location: ../401.html");
+            exit;
+        }
+        ?>
 
-    <script>
         let onEdit = false;
         let itemID = "";
+        
+        function removeItem(id) {
+            itemID = id;
+        }
 
         function editItem() {
             // get all textarea and input
@@ -75,7 +85,7 @@
                                 <td>${qty}</td>
                                 <td>${price}</td>
                                 <td><a href="#" onclick="getByID(${id})" class="link-info" data-bs-toggle="modal" data-bs-target="#data">details</a></td>
-                                <td><a href="#" class="link-info" onclick="removeAt(${id})">delete</a></td>
+                                <td><a href="#" class="link-danger" data-bs-toggle="modal" data-bs-target="#modal" onclick="removeItem(${id})">delete</a></td>
 							</tr>`
                     }
                     body.append(code);
@@ -113,25 +123,23 @@
             });
         }
 
-        function removeAt(id) {
+        function sendDelete(id) {
             //delete item from database
-            if (confirm("Are you sure to delete this item?\nAll data will be deleted after confirmation.")) {
-                $.ajax({
-                    url: `../../php/itemController.php?itemID=${id}`,
-                    type: "DELETE",
-                    success: function(data) {
-                        if (data == "Success") {
-                            alert("Item deleted");
-                            window.location.reload();
-                        } else {
-                            alert("Failed to delete item");
-                        }
-                    },
-                    error: function(err) {
-                        console.log(err);
+            $.ajax({
+                url: `../../php/itemController.php?itemID=${itemID}`,
+                type: "DELETE",
+                success: function(data) {
+                    if (data == "Success") {
+                        alert("Item deleted");
+                        window.location.reload();
+                    } else {
+                        alert("Failed to delete item");
                     }
-                });
-            };
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
         }
 
         //request to update item data to database
@@ -188,7 +196,7 @@
                             </a>
                         </li>
                         <li class="nav-item text-black">
-                            <a class="nav-link text-black" href="../order.php.html">
+                            <a class="nav-link text-black" href="../order.php">
                                 Orders
                             </a>
                         </li>
@@ -277,7 +285,22 @@
         <input type="hidden" name="stockQuantity" value="">
         <input type="hidden" name="price" value="">
     </form>
+    <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">
+                        Are you sure to delete this item? All related records will be deleted
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" onclick="sendDelete()">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div w3-include-html="../footer.html"></div>
 </body>
 
-</html>

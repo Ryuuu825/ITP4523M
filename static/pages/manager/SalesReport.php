@@ -11,16 +11,21 @@
     <script src="../../js/w3.js"></script>
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous">
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js">
     </script>
     <script type="text/javascript">
+        <?php
+        session_start();
+        if (empty($_SESSION["username"])) {
+            header("Location: ../401.html");
+            exit;
+        }
+        ?>
         let staff = [];
         let orders = [];
         let dummyData = [];
@@ -28,7 +33,7 @@
         let myChart = null;
 
         $(document).ready(
-            function () {
+            function() {
                 curMonth = new Date().getMonth();
                 if (curMonth < 10) {
                     curMonth = "0" + curMonth;
@@ -44,7 +49,7 @@
                     todayHighlight: true,
                     orientation: "bottom auto",
                     todayBtn: "linked",
-                }).on('changeDate', function (e) {
+                }).on('changeDate', function(e) {
                     getByMonth(e.format());
                     selectedMonth = e.format();
                     $("#orderRecord").css("display", "none");
@@ -76,7 +81,7 @@
             });
             var ctx = document.getElementById("sales").getContext("2d");
             $("#sales").click(
-                function (evt) {
+                function(evt) {
                     var activePoints = myChart.getElementsAtEvent(evt);
                     // set the information on the form
                     if (activePoints[0]) {
@@ -113,7 +118,7 @@
                 data: {
                     month: month
                 },
-                success: function (data) {
+                success: function(data) {
                     staff = [];
                     orders = [];
                     for (let i = 0; i < data.length; i++) {
@@ -127,7 +132,7 @@
                     }
                     initChart();
                 },
-                error: function (err) {
+                error: function(err) {
                     if (myChart != null) {
                         myChart.destroy();
                     }
@@ -144,7 +149,7 @@
                     month: selectedMonth,
                     staffID: $("#staffID").val()
                 },
-                success: function (data) {
+                success: function(data) {
                     let code = "";
                     for (let i = 0; i < data.length; i++) {
                         let orderID = data[i].orderID;
@@ -162,7 +167,7 @@
                     }
                     $("tbody").html(code);
                 },
-                error: function (err) {
+                error: function(err) {
                     console.log(err);
                 }
             });
@@ -175,12 +180,10 @@
         <nav class="navbar navbar-expand-lg py-4" style="background-color:#e4e4e4">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">
-                    <img src="../../assert/main.png" alt="" width="30" height="24"
-                        class="d-inline-block align-text-top">
+                    <img src="../../assert/main.png" alt="" width="30" height="24" class="d-inline-block align-text-top">
                     The Better Limited
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
