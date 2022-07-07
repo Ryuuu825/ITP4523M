@@ -1,7 +1,8 @@
 <?php
 require_once('conn.php');
+require_once('helper.php');
+check_is_login();
 $conn = get_db_connection();
-
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	// Order ID
 	// Customer Name
