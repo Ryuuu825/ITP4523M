@@ -23,8 +23,8 @@
             <div class="">
                 <h1 class="text-center">500</h1>
                 <h2 class="text-center">Internal Server Error</h2>
-                <p class="text-center">Trace: <?php echo $_COOKIE["error_msg"] ?></p>
-                <p class="text-center">Please go back to <a href="../index.php">homepage</a>.</p>
+                <p class="text-center">Trace: <span class="text-danger fs-5"> <?php echo $_COOKIE["error_msg"] ?> </span> </p>
+                <p class="text-center">Please go back to <a href="../login.php" >homepage</a>.</p>
             </div>
         </div>
     </div>

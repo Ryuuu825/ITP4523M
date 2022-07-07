@@ -55,8 +55,6 @@
                     quantity = parseInt($(`#${id}_qty`).text()) + 1;
                 }
 
-                console.log(stock)
-                console.log(quantity)
 
                 if(stock - quantity < 0)
                 {

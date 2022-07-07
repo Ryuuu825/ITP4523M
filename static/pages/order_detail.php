@@ -197,7 +197,7 @@
     <?php include_once "./header.php"; ?>
 
     <div class="m-5 py-3 border-bottom disappear-print">
-        <a href="./order.php" class="btn btn-secondary px-3 mb-2 p-2 rounded shadow">
+        <a onclick="history.back()" class="btn btn-secondary px-3 mb-2 p-2 rounded shadow">
             Back
         </a>
         <button class="h2 btn btn-primary text-white px-3 mx-2 p-2 rounded shadow" onclick="printReceipt()">
