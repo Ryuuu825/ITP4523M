@@ -75,7 +75,7 @@
                 }
             }
 
-            function changeQty(id , qty)
+            function changeQty(id , qty , price)
             {
                 if (!check_enough_stock(id, qty)) return;
 
@@ -90,6 +90,9 @@
                     $("#"+id+"_card").remove();
                     cart = cart.filter(item => item !== id.toString())
                     $("#form_data input[name="+id+"]").remove();
+                    total_price = 0;
+                    $("#price").html(total_price);
+                    $("#price_modal").html(total_price);
                     return;
                 }
 
@@ -98,13 +101,17 @@
                 // and display to the user and the hidden input
                 $("#" + id + "_qty").text(real_qty ); 
                 $("#cart_form input[name=" + id + "]").val(real_qty);
-            }
 
-
-            function addToCart(itemid , item_name , price ) {
-                if (!check_enough_stock(itemid,1)) return;
-
-                total_price+= parseInt(price);
+                
+                // update the total price
+                if (qty < 0)
+                {
+                    total_price -= parseInt(price);
+                }
+                else
+                {
+                    total_price += parseInt(price);
+                }
                 // get the discount from api
                 $.ajax({
                     url:"http://127.0.0.1:8080/api/discountCalculator?discount="+(total_price),
@@ -128,6 +135,12 @@
                         $("#price_modal").text(new_price);
                     }
                 })
+
+            }
+
+
+            function addToCart(itemid , item_name , price ) {
+                if (!check_enough_stock(itemid,1)) return;
                 
 
                 // check if the item is already in the cart
@@ -140,12 +153,14 @@
                 }
                 if (isInCart)
                 {
-                    changeQty(itemid, 1);
+                    changeQty(itemid, 1, price);
                     return;
                 }
                 
                 // add the cart
                 cart.push(itemid);
+
+                changeQty(itemid, 1, price);
 
                 var listGroup = document.getElementsByClassName("list-group");
                 // add item to list-group
@@ -156,12 +171,12 @@
                     <h5 class="card-title">${item_name}</h5>
                     <div class="itemid">1000</div>
                     <div class="float-end">
-                        <svg onclick="changeQty(${itemid} , -1);" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle mx-3 pointer text-primary" viewBox="0 0 16 16">
+                        <svg onclick="changeQty(${itemid} , -1 , ${price});" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle mx-3 pointer text-primary" viewBox="0 0 16 16">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/> 
                             <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
                         </svg>
                         <p class="card-text d-inline qty"  id="${itemid}_qty">1</p>
-                        <svg onclick="changeQty(${itemid} , 1);" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle mx-3 pointer text-primary" viewBox="0 0 16 16">
+                        <svg onclick="changeQty(${itemid} , 1 , ${price});" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle mx-3 pointer text-primary" viewBox="0 0 16 16">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                             <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                         </svg>
