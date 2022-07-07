@@ -59,6 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
 	}
 } else if ($_SERVER['REQUEST_METHOD'] == "DELETE") {
 	// delete item
+	$sql = "DELETE FROM itemorders WHERE itemID = '{$_GET['itemID']}'";
+	$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
 	$sql = "DELETE FROM item WHERE itemID = '{$_GET['itemID']}'";
 	$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
 	if ($result) {

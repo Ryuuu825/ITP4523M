@@ -27,7 +27,7 @@
             <a class="list-group-item list-group-item-action" href="./manager/items.php">
                 Item
             </a>
-            <a class="list-group-item list-group-item-action" href="./placeorder.php.html">
+            <a class="list-group-item list-group-item-action" href="./placeorder.php">
                 Place Order
             </a>
             <a class="list-group-item list-group-item-action" href="./account.php">
