@@ -43,24 +43,47 @@
             }
         </style>
         <script>
-            // function changeQty(qty, parent) {
-            //     var qtyNode = parent.getElementsByClassName("qty")[0];
-            //     var currQty = parseInt(qtyNode.innerHTML);
-            //     if (currQty + qty > 0) // not allow to be negative or zero
-            //         qtyNode.innerHTML = currQty + qty;
-            // }
+            
+            function check_enough_stock(id)
+            {
+                const stock = $(`input[name=${id}_stock]`).val();
 
+                quantity = 1;
+
+                if ($("#2_qty").text() != "")
+                {
+                    quantity = parseInt($(`#${id}_qty`).text()) + 1;
+                }
+
+                console.log(stock)
+                console.log(quantity)
+
+                if(stock - quantity < 0)
+                {
+                    alert("Not enough stock");
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
             function changeQty(id , qty)
             {
+                if (!check_enough_stock(id)) return;
+
                 real_qty = parseInt($("#" + id + "_qty").text()) + parseInt(qty);
                 $("#" + id + "_qty").text(real_qty ); 
-
             }
 
             cart = [];
             total = 0;
 
             function addToCart(itemid , item_name , price ) {
+                if (!check_enough_stock(itemid)) 
+                    return;
+                
+
                 // calculate the total price
                 curr = $("#price").text();
                 new_price = parseInt(curr) + parseInt(price);
@@ -197,6 +220,10 @@
                     $res = mysqli_query($conn, $sql);
                     while($row = mysqli_fetch_assoc($res))
                     {
+                        if ($row["stockQuantity"] <= 0)
+                        {
+                            continue;
+                        }
                         $item_name = $row['itemName'];
                         $item_name =  str_replace("\"", " ", $item_name);
                         echo <<<EOF
@@ -205,6 +232,7 @@
                                     <h5 class="card-title">
                                         {$row['itemName']}
                                     </h5>
+                                    <input type="hidden" value="{$row['stockQuantity']}" name="{$row['itemID']}_stock">
                                     <a
                                         href="#"
                                         class="btn btn-primary text-white"
