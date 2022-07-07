@@ -43,26 +43,7 @@
             }
         }
 
-        function initOrderItem() {
-            $.ajax({
-                type: "POST",
-                url: "../../php/itemController.php",
-                data: {
-                    itemName: itemName,
-                    itemDescription: itemDescription,
-                    stockQuantity: stockQuantity,
-                    price: price
-                },
-                success: function(data) {
-                    if (data == "Error") {
-                        alert("Add item failed.");
-                    } else {
-                        alert("Add item successfully.");
-                        window.location.href = "additem-result.php?itemID=" + data;
-                    }
-                }
-            });
-        }
+        function initOrderItem() {}
 
         $(document).ready(function() {
             initOrderItem();
@@ -85,7 +66,29 @@
         </a>
 
         <span class="h2 float-end mx-3">
-            <?php echo $totalAmount; ?>
+            <?php
+            if (!empty($_POST)) {
+                extract($_POST);
+                include_once("../php/conn.php");
+                include_once("../php/CallDiscount.php");
+                $conn = get_db_connection();
+                $orderItems = array();
+                $totalAmount = 0.0;
+                foreach ($_POST as $oiID => $qty) {
+                    $orderItems[] = array(
+                        "oiID" => $oiID,
+                        "qty" => $qty
+                    );
+                    $sql = "SELECT price*{$qty} AS `Amount` FROM item WHERE itemId = {$oiID}";
+                    $result = mysqli_query($conn, $sql);
+                    $row = mysqli_fetch_assoc($result);
+                    $totalAmount += (float)($row['Amount']);
+                }
+                $discount = getDiscount($totalAmount);
+                $preDiscount = 1 - $discount;
+                $totalAmount *= $preDiscount;
+                echo "$" . $totalAmount;
+            ?>
         </span>
         <span class="h2 float-end mx-3">
             Total:
@@ -118,35 +121,26 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php
-                                if (!empty($_POST)) {
-                                    include_once("../../php/conn.php");
-                                    include_once("../../php/CallDiscount.php");
-                                    $conn = get_db_connection();
-                                    $orderItems = array();
-                                    $totalAmount = 0.0;
-                                    foreach ($_POST as $oiID => $qty) {
-                                        $sql = "SELECT price*{$qty} AS `Amount` FROM item WHERE itemId = {$oiID}";
-                                        $result = mysqli_query($conn, $sql);
-                                        $row = mysqli_fetch_assoc($result);
-                                        $totalAmount += (float)($row['Amount']);
-                                    }
-                                    $discount = getDiscount($totalAmount);
-                                    $totalAmount *= (1 - $discount);
-                                }
-                                for ($i = 0; $i < count($orderItems); $i++) {
-                                    $sql = "SELECT `itemName`,`price`, price*{$qty}*{$discount} AS `soldPrice` FROM item WHERE itemId = {$oiID}";
-                                    $result = mysqli_query($conn, $sql);
-                                    $row = mysqli_fetch_assoc($result);
-                                    echo `<tr>
-                                    <th scope="row">{$i}</th>
-                                    <td>{$row['itemName']}</td>
-                                    <td style="text-align: center;">{$row['price']}</td>
-                                    <td style="text-align: center;">{$qty}</td>
-                                    <td style="text-align: center;">{$row['soldPrice']}</td>
-                                    </tr>`;
-                                }
-                                ?>
+                            <?php
+
+                            for ($i = 1; $i <= count($orderItems); $i++) {
+                                $oiID = $orderItems[$i-1]["oiID"];
+                                $qty = $orderItems[$i-1]["qty"];
+                                $sql = "SELECT `itemName`,`price`, price*{$qty}*{$preDiscount} AS `soldPrice` FROM item WHERE itemId = {$oiID}";
+                                $result = mysqli_query($conn, $sql);
+                                $row = mysqli_fetch_assoc($result);
+                                echo <<<EOD
+                                            <tr>
+                                            <th scope="row">{$i}</th>
+                                            <td>{$row['itemName']}</td>
+                                            <td style="text-align: center;">{$row['price']}</td>
+                                            <td style="text-align: center;">{$qty}</td>
+                                            <td style="text-align: center;">{$row['soldPrice']}</td>
+                                            </tr>
+                                        EOD;
+                            }
+                        }
+                            ?>
                             </tbody>
                         </table>
                     </div>
@@ -154,7 +148,7 @@
             </div>
         </div>
 
-        <div class="sub-form border rounded mt-5">
+        <div class="sub-form border rounded mt-5" style="margin-bottom:100px;">
             <form class="mx-4 my-5" action="./placeorder-3.php" method="post">
                 <!-- 
                     2.	Customer’s Email
@@ -198,8 +192,6 @@
                     <label for="delivery_address" class="form-label">Delivery Address</label>
                     <input type="text" class="form-control" id="delivery_address" placeholder="1234 Main St" name="address">
                 </div>
-
-                <button type="submit" class="btn btn-primary text-white">Submit</button>
             </form>
         </div>
     </div>

@@ -51,6 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
 } else if ($_SERVER['REQUEST_METHOD'] == "POST") {
 	if (strlen($_POST['itemName'])> 0 && strlen($_POST['price'])> 0 && strlen($_POST['stockQuantity'])> 0) {
 		// create item
+		extract($_POST);
 		$sql = "SELECT max(itemId)+1 AS 'nextid' FROM item;";
     $result = mysqli_query($conn, $sql)
         or die('<div class="error">SQL command fails :<br>' . mysqli_error($conn)) . "</div>";
@@ -62,10 +63,6 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
     }
     $rc = mysqli_fetch_assoc($result);
     $nextid = $rc['nextid'];
-		$itemName = $_POST['itemName'];
-		$itemDescription = $_POST['itemDescription'];
-		$price = $_POST['price'];
-		$stockQuantity = $_POST['stockQuantity'];
 		$sql = "INSERT INTO item VALUES ('{$nextid}', '{$itemName}', '{$itemDescription}', '{$price}', '{$stockQuantity}')";
 		$result = mysqli_query($conn, $sql);
 		if ($result) {
