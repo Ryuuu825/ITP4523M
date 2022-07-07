@@ -12,16 +12,14 @@ def usage():
 
 @app.route("/api/discountCalculator" , methods=['GET'])
 def discountCalculator():
-    price = int(request.args.get('discount'))
+    price = int(str(request.args.get('discount')))
     if price >= 3000:
-        price = price * 1.03
+        return {"discount": 0.03}
     elif price >= 5000:
-        price = price * 1.08
+        return {"discount": 0.08}
     elif price >= 10000:
-        price = price * 1.12
+        return {"discount": 0.12}
     else:
-        price = price
-
-    return str(price)
+        return {"discount": 0}
 
 app.run()
