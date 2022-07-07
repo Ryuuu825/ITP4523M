@@ -273,7 +273,7 @@
                         <div class="fs-5">Total Price : $ <span id="price_modal">0</span> </div>
                     </div>
                     <div class="modal-footer">
-                            <a href="placeorder-2.php.html">
+                            <a href="placeorder-2.php">
                                 <button
                                     type="button"
                                     class="btn btn-secondary"

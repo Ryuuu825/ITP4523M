@@ -121,7 +121,7 @@
         </div>
 
         <div class="sub-form border rounded mt-5">
-            <form class="mx-4 my-5" action="./placeorder-3.php.html" method="Get">
+            <form class="mx-4 my-5" action="./placeorder-3.php" method="POST">
                 <!-- 
                     2.	Customer’s Email
                     3.	Staff ID
@@ -143,9 +143,9 @@
                     <input type="text" readonly class="form-control" value="Mon Jun 13 2022 05:37:57 GMT+0000" disabled name="order_date">
                 </div>
                 <!-- checkbox -->
-                <div class="custom-control custom-checkbox mb-3" onclick="showDeliveryPickerForm()">
-                    <input type="checkbox" class="custom-control-input" id="checkbox_delivery">
-                    <label class="custom-control-label" for="checkbox_delivery" onclick="showDeliveryPickerForm()">need Delivery?</label>
+                <div class="custom-control custom-checkbox mb-3">
+                    <input type="checkbox" class="custom-control-input" id="checkbox_delivery" onchange="showDeliveryPickerForm()">
+                    <label class="custom-control-label" for="checkbox_delivery">need Delivery?</label>
                 </div>
 
                 <div class="mb-3 delivery" id="delivery-picker" style="display: none;">
