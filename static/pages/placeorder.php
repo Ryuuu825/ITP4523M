@@ -44,16 +44,23 @@
             }
         </style>
         <script>
+
+            cart = [];          // the ids of the items in the cart
+            total = 0;
+            total_price = 0;
             
-            function check_enough_stock(id)
+            function check_enough_stock(id, qty)
             {
+                // get the stock quantity from hidden input
                 const stock = $(`input[name=${id}_stock]`).val();
-
+                // default
                 quantity = 1;
-
-                if ($("#2_qty").text() != "")
+                
+                // if the item is in the cart, get the quantity from the cart card
+                // and determine the quantity to be ordered
+                if ($("#"+id+"_qty").text() != "")
                 {
-                    quantity = parseInt($(`#${id}_qty`).text()) + 1;
+                    quantity = parseInt($(`#${id}_qty`).text()) + qty;
                 }
 
 
@@ -67,23 +74,35 @@
                     return true;
                 }
             }
+
             function changeQty(id , qty)
             {
-                if (!check_enough_stock(id)) return;
+                if (!check_enough_stock(id, qty)) return;
 
-                real_qty = parseInt($("#" + id + "_qty").text()) + parseInt(qty);
+                // check if the quantity will be 0 after change
+                curr_qty = parseInt($("#" + id + "_qty").text());
+                // the cart could not have qty with <= 0
+                if (curr_qty + qty < 0) return; 
+                
+                // remove the element if the quantity is 0
+                if (curr_qty + qty == 0)
+                {
+                    $("#"+id+"_card").remove();
+                    cart = cart.filter(item => item !== id.toString())
+                    $("#form_data input[name="+id+"]").remove();
+                    return;
+                }
+
+                // add the quantity
+                real_qty = curr_qty  + qty;
+                // and display to the user and the hidden input
                 $("#" + id + "_qty").text(real_qty ); 
                 $("#cart_form input[name=" + id + "]").val(real_qty);
             }
 
-            cart = [];
-            total = 0;
-            total_price = 0;
 
             function addToCart(itemid , item_name , price ) {
-                if (!check_enough_stock(itemid)) 
-                    return;
-                
+                if (!check_enough_stock(itemid,1)) return;
 
                 total_price+= parseInt(price);
                 // get the discount from api
@@ -94,7 +113,7 @@
                     crossDomin: true,
                     success:function(data)
                     {
-                        new_price = (total_price) * (1- data.discount);
+                        new_price = (total_price) * (1 - data.discount);
                         new_price = Math.floor(new_price * 100) / 100;
                         
                         if (data.discount != 0)
@@ -108,7 +127,7 @@
                         }
                         $("#price_modal").text(new_price);
                     }
-                 })
+                })
                 
 
                 // check if the item is already in the cart
@@ -125,7 +144,7 @@
                     return;
                 }
                 
-
+                // add the cart
                 cart.push(itemid);
 
                 var listGroup = document.getElementsByClassName("list-group");
@@ -133,7 +152,7 @@
                 var item = document.getElementById(itemid);
                 var z = document.createElement("div"); // is a node
                 z.innerHTML = `
-                <li class="list-group-item">
+                <li class="list-group-item" id="${itemid}_card">
                     <h5 class="card-title">${item_name}</h5>
                     <div class="itemid">1000</div>
                     <div class="float-end">
@@ -152,29 +171,28 @@
                 listGroup[0].appendChild(z);
                 // add item to the form cart
                 $("#form_data").append(`<input type='hidden' name='${itemid}'  value='${1}'>`)
+               
             }
+            
 
             function search()
             {
+                // get the searching result from server and display it
                 $.ajax({
                     accepts: "application/json",
                     method: "GET",
                     dataType:"json",
                     url: "../php/itemController.php?name="+$("input[name=name]").val(),
                     success: (data) => {
-                        if (data == "Items not found")
-                        {
-                            $("#items_list").html("")
-                        }
-                        console.log($("#item_list").html())
+                        // the server return "Items not found" if no item found
                         str = "";
-                        console.log(data)
+                        // reset the item in the list
                         $("#items_list").html("")
                         
                         for(i = 0 ; i < data.length ; i++)
                         {
-                            //  $item_name =  str_replace("\"", " ", $item_name);
                             name = data[i].itemName;
+                            // replace all the '"' to ' ' to avoid the error of the html
                             name = name.replace(/\"/g, " ");
                             str += `
                                 <div class="card col-3 mx-2 my-2" style="width: 18rem">
@@ -194,6 +212,9 @@
                             `;
                         }
                         $("#items_list").html(str)
+                    },
+                    error: (err) => {
+                        $("#items_list").html("")
                     }
                 });
             }
@@ -203,25 +224,9 @@
                 cart_.innerHTML = "";
                 cart = [];
                 $("#price").text("0");
-            }
-
-            function send_request()
-            {
-                // send a post request to the server
-                // and forward to that pages
-
-                // create a form
-                var form = document.createElement("form");
-                form.setAttribute("method", "post");
-                form.setAttribute("action", "../php/cartController.php");
-                // add the cart to the form
-                var cart_ = document.getElementById("cart");
-                var cart_str = cart_.innerHTML;
-                var cart_input = document.createElement("input");
-                cart_input.setAttribute("type", "hidden");
-
-                // send the form to the server
-                form.send();                
+                $("#price_modal").text("0");
+                // delete the form data except the submitted button
+                $("#form_data").find("input:not([type=button]):not([type=submit]):not([type=reset])").remove();
 
             }
         </script>
@@ -281,13 +286,7 @@
                 <div class="row mt-4" id="items_list">
 
                 <?php 
-                    $sql;
-
-                    if (isset($_GET["search"])) {
-                        $sql = "SELECT * FROM products WHERE name LIKE '%".$_GET["search"]."%'";
-                    } else {
-                        $sql = "SELECT * FROM `Item`";
-                    }
+                    $sql = "SELECT * FROM `Item`";
                     $res = mysqli_query($conn, $sql);
                     while($row = mysqli_fetch_assoc($res))
                     {
