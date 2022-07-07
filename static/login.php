@@ -50,7 +50,7 @@ if ($is_try_login)
 
             // create a cookie to remember the user's login
             // and hashed username
-            $_SESSION["username"] =  hash('sha256' , $username);
+            $_SESSION["username"] =  $username;
             $_SESSION["staff_name"] = $row["staffName"];
             $_SESSION["position"] = $row["position"];
             

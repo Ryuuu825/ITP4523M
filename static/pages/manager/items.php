@@ -9,11 +9,9 @@
     <link rel="stylesheet" href="../../css/bootstrap.css" />
     <link rel="stylesheet" href="../../css/style.css" />
     <script src="../../js/w3.js"></script>
-    <script src="../../js/Items.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <!-- JavaScript Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous">
     </script>
     <script>
         let onEdit = false;
@@ -44,11 +42,11 @@
             onEdit = false;
         }
 
-        $('#data').on('hidden.bs.modal', function () {
+        $('#data').on('hidden.bs.modal', function() {
             resetForm();
         });
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             getAll();
         });
 
@@ -58,7 +56,7 @@
                 url: "../../php/itemController.php",
                 type: "GET",
                 dataType: "json",
-                success: function (data) {
+                success: function(data) {
                     let body = $("tbody");
                     let code = "";
                     for (let i = 0; i < data.length; i++) {
@@ -80,7 +78,7 @@
                     }
                     body.append(code);
                 },
-                error: function (err) {
+                error: function(err) {
                     console.log(err);
                 }
             });
@@ -95,7 +93,7 @@
                 data: {
                     itemID: id
                 },
-                success: function (data) {
+                success: function(data) {
                     let item = data;
                     let id = item.itemID;
                     let name = item.itemName;
@@ -107,28 +105,31 @@
                     $("#data #qty").val(qty);
                     $("#data #price").val(price);
                 },
-                error: function (err) {
+                error: function(err) {
                     console.log(err);
                 }
             });
         }
 
         function removeAt(id) {
-            $.ajax({
-                url: `../../php/itemController.php?itemID=${id}`,
-                type: "DELETE",
-                success: function (data) {
-                    if (data == "Success") {
-                        alert("Item deleted");
-                        window.location.reload();
-                    } else {
-                        alert("Failed to delete item");
+            //delete item from database
+            if (confirm("Are you sure to delete this item?\nAll data will be deleted after confirmation.")) {
+                $.ajax({
+                    url: `../../php/itemController.php?itemID=${id}`,
+                    type: "DELETE",
+                    success: function(data) {
+                        if (data == "Success") {
+                            alert("Item deleted");
+                            window.location.reload();
+                        } else {
+                            alert("Failed to delete item");
+                        }
+                    },
+                    error: function(err) {
+                        console.log(err);
                     }
-                },
-                error: function (err) {
-                    console.log(err);
-                }
-            });
+                });
+            };
         }
 
         //request to update item data to database
@@ -144,11 +145,11 @@
                     stockQuantity: $("#data #qty").val(),
                     price: $("#data #price").val()
                 },
-                success: function (data) {
+                success: function(data) {
                     alert("Item updated");
                     window.location.reload();
                 },
-                error: function (err) {
+                error: function(err) {
                     console.log(err);
                 }
             });
@@ -161,12 +162,10 @@
         <nav class="navbar navbar-expand-lg py-4" style="background-color: #e4e4e4">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">
-                    <img src="../../assert/main.png" alt="" width="30" height="24"
-                        class="d-inline-block align-text-top" />
+                    <img src="../../assert/main.png" alt="" width="30" height="24" class="d-inline-block align-text-top" />
                     The Better Limited
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
