@@ -46,7 +46,7 @@
                         alert("Add item failed.");
                     } else {
                         alert("Add item successfully.");
-                        window.location.href = "additem-result.html?itemID=" + data;
+                        window.location.href = "additem-result.php?itemID=" + data;
                     }
                 }
             });
