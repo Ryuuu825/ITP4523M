@@ -8,6 +8,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="../css/bootstrap.css">
     <link rel="stylesheet" href="../css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="../js/w3.js"></script>
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
@@ -41,27 +42,56 @@
                 }
             }
         }
+
+        function initOrderItem() {
+            $.ajax({
+                type: "POST",
+                url: "../../php/itemController.php",
+                data: {
+                    itemName: itemName,
+                    itemDescription: itemDescription,
+                    stockQuantity: stockQuantity,
+                    price: price
+                },
+                success: function(data) {
+                    if (data == "Error") {
+                        alert("Add item failed.");
+                    } else {
+                        alert("Add item successfully.");
+                        window.location.href = "additem-result.php?itemID=" + data;
+                    }
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            initOrderItem();
+        });
     </script>
+    <?php
+    include_once("../php/helper.php");
+    check_is_login();
+    ?>
 </head>
 
 <body onload="w3.includeHTML();">
-    <div w3-include-html="header.html"></div>
+    <?php include_once "./header.php"; ?>
     <div class="m-5 py-3 border-bottom">
         <span class="h2">Place Order</span>
-        <a href="./placeorder-3.php.html">
+        <a href="./placeorder-3.php">
             <button class="btn btn-primary float-end">
                 <span class="text-white">Place</span>
             </button>
         </a>
 
         <span class="h2 float-end mx-3">
-            $1000
+            <?php echo $totalAmount; ?>
         </span>
         <span class="h2 float-end mx-3">
             Total:
         </span>
     </div>
-    <a href="./placeorder.php.html">
+    <a href="./placeorder.php">
         <button class="btn btn-secondary mx-5">
             Back
         </button>
@@ -82,27 +112,39 @@
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Name</th>
-                                    <th scope="col">Price</th>
-                                    <th scope="col">Qty</th>
+                                    <th scope="col" style="text-align: center;">Price</th>
+                                    <th scope="col" style="text-align: center;">Qty</th>
+                                    <th scope="col" style="text-align: center;">Sold Price</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>NOVEL NF4091 9”All-way Strong Wind Circulation Fan</td>
-                                    <td>$500</td>
-                                    <td>1</td>
-                                </tr>
                                 <?php
-                                session_start();
-                                foreach ($_POST as $orderItem => $qty) {
-                                    $product = str_replace("_", " ", $product);
-                                    $_SESSION[$product] = $qty;
-                                }
-                                foreach ($_SESSION as $product => $qty) {
-                                    if ($qty != 0) {
-                                        echo "$product. QTY: $qty<br>";
+                                if (!empty($_POST)) {
+                                    include_once("../../php/conn.php");
+                                    include_once("../../php/CallDiscount.php");
+                                    $conn = get_db_connection();
+                                    $orderItems = array();
+                                    $totalAmount = 0.0;
+                                    foreach ($_POST as $oiID => $qty) {
+                                        $sql = "SELECT price*{$qty} AS `Amount` FROM item WHERE itemId = {$oiID}";
+                                        $result = mysqli_query($conn, $sql);
+                                        $row = mysqli_fetch_assoc($result);
+                                        $totalAmount += (float)($row['Amount']);
                                     }
+                                    $discount = getDiscount($totalAmount);
+                                    $totalAmount *= (1 - $discount);
+                                }
+                                for ($i = 0; $i < count($orderItems); $i++) {
+                                    $sql = "SELECT `itemName`,`price`, price*{$qty}*{$discount} AS `soldPrice` FROM item WHERE itemId = {$oiID}";
+                                    $result = mysqli_query($conn, $sql);
+                                    $row = mysqli_fetch_assoc($result);
+                                    echo `<tr>
+                                    <th scope="row">{$i}</th>
+                                    <td>{$row['itemName']}</td>
+                                    <td style="text-align: center;">{$row['price']}</td>
+                                    <td style="text-align: center;">{$qty}</td>
+                                    <td style="text-align: center;">{$row['soldPrice']}</td>
+                                    </tr>`;
                                 }
                                 ?>
                             </tbody>
@@ -113,7 +155,7 @@
         </div>
 
         <div class="sub-form border rounded mt-5">
-            <form class="mx-4 my-5" action="./placeorder-3.php" method="POST">
+            <form class="mx-4 my-5" action="./placeorder-3.php" method="post">
                 <!-- 
                     2.	Customer’s Email
                     3.	Staff ID
@@ -123,8 +165,16 @@
                  -->
 
                 <div class="mb-3">
+                    <label for="email" class="form-label">Customer Name</label>
+                    <input type="email" class="form-control" id="cusName" placeholder="e.g Chan Tai Man" name="customerName" required>
+                </div>
+                <div class="mb-3">
                     <label for="email" class="form-label">Customer Email</label>
-                    <input type="email" class="form-control" id="email" placeholder="example@domain.com" name="email" required>
+                    <input type="email" class="form-control" id="email" placeholder="example@domain.com" name="customerEmail" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Customer Phone</label>
+                    <input type="email" class="form-control" id="cusPhone" placeholder="e.g 12345678" name="phoneNumber" required>
                 </div>
                 <div class="mb-3">
                     <label for="staticEmail" class="form-label">Staff ID</label>
