@@ -6,11 +6,13 @@ $conn = get_db_connection();
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
 	extract($_POST);
 	//create customer or update customer
-	$check_email = mysqli_query($conn, "SELECT * FROM customer WHERE customerEmail = '{$customerEmail}' ");
-	if (mysqli_num_rows($check_email) == 0) {
+	$sql = "SELECT * FROM customer WHERE customerEmail = '{$customerEmail}' ";
+	$result = mysqli_query($conn, $sql);
+	$rc = mysqli_fetch_assoc($result);
+	if (mysqli_num_rows($result) == 0) {
 		$sql = "INSERT INTO customer VALUES ('{$customerEmail}', '{$customerName}', '{$phoneNumber}')";
 		$result = mysqli_query($conn, $sql);
-	} else if ($check_email['customerName'] != $customerName || $check_email['phoneNumber'] != $phoneNumber) {
+	} else if ($rc['customerName'] != $customerName || $rc['phoneNumber'] != $phoneNumber) {
 		$sql = "UPDATE customer 
 						SET customerName = '{$customerName}',phoneNumber = '{$phoneNumber}' 
 						WHERE customerEmail = '{$customerEmail}'";

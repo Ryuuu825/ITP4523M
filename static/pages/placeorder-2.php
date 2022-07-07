@@ -205,11 +205,11 @@
 
                 <div class="mb-3 delivery" id="delivery-picker" style="display: none;">
                     <label for="delivery_date" class="form-label">Delivery Date</label>
-                    <input type="date" class="form-control" id="delivery_date" require name="delivery_date">
+                    <input type="date" class="form-control" id="delivery_date" require name="deliveryDate">
                 </div>
                 <div class="mb-3 delivery" style="display: none;">
                     <label for="delivery_address" class="form-label">Delivery Address</label>
-                    <input type="text" class="form-control" id="delivery_address" require placeholder="1234 Main St" name="address">
+                    <input type="text" class="form-control" id="delivery_address" require placeholder="1234 Main St" name="deliveryAddress">
                 </div>
             </form>
         </div>

@@ -24,22 +24,27 @@
         ?>
         //add itme to database
         function addItem() {
-            var itemName = $("#name").val();
-            var itemDescription = $("#desc").val();
-            var stockQuantity = $("#qty").val();
-            var price = $("#price").val();
-            if (itemName == "" || stockQuantity == "" || price == "") {
-                alert("Please fill out the form correctly.");
+            if ($("#name").val() == "") {
+                alert("Please enter the item name.");
+                $("#name").focus();
+                return;
+            } else if ($("#qty").val() == "") {
+                alert("Please enter the item quantity.");
+                $("#qty").focus();
+                return;
+            } else if ($("#price").val() == "") {
+                alert("Please enter the item price.");
+                $("#price").focus();
                 return;
             }
             $.ajax({
                 type: "POST",
                 url: "../../php/itemController.php",
                 data: {
-                    itemName: itemName,
-                    itemDescription: itemDescription,
-                    stockQuantity: stockQuantity,
-                    price: price
+                    itemName: $("#name").val(),
+                    itemDescription: $("#desc").val(),
+                    stockQuantity: $("#qty").val(),
+                    price: $("#price").val()
                 },
                 success: function(data) {
                     if (data == "Error") {
@@ -56,10 +61,11 @@
 
 <body onload="w3.includeHTML();">
 
-    <div class="w-100 mb-5">
+<div class="w-100">
+<div class="w-100">
         <nav class="navbar navbar-expand-lg py-4" style="background-color:#e4e4e4">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="../index.php">
                     <img src="../../assert/main.png" alt="" width="30" height="24" class="d-inline-block align-text-top">
                     The Better Limited
                 </a>
@@ -69,7 +75,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav  me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active text-black" aria-current="page" href="#">
+                            <a class="nav-link active text-black" aria-current="page" href="./items.php">
                                 Items
                             </a>
                         </li>
@@ -83,15 +89,14 @@
                                 Accounts
                             </a>
                         </li>
-                        <li class="nav-item text-black">
-                            <a class="nav-link text-black">
+                        <li class="nav-item">
+                            <a class="nav-link text-black" href="../order.php">
                                 Orders
                             </a>
                         </li>
-
                     </ul>
                     <span>
-                        <span class="text-black fs-5 mx-3">Staff - Ken</span>
+                        <span class="text-black fs-5 mx-3"><?php echo $_SESSION['position'] ?> - <?php echo $_SESSION['staff_name'] ?></span>
                         <a href="../../login.php" class="nav-link d-inline">
                             <span class="text-black">Logout</span>
                         </a>
@@ -115,7 +120,7 @@
             </div>
             <div class="form-group mb-3">
                 <label for="qty" class="mb-2">Stock Quantity*</label>
-                <input type="number" class="form-control" id="qty" name="stockQuantity" required placeholder="Item Price">
+                <input type="number" class="form-control" id="qty" name="stockQuantity" required placeholder="Item Quantity">
             </div>
             <div class="form-group">
                 <label for="itemprice" class="mb-2 block">Price*</label>
