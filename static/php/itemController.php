@@ -14,7 +14,23 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
 			$item = $row;
 			echo json_encode($item);
 		};
-	} else {
+	}
+	else if (isset($_GET["name"]))
+	{
+		$para = $_GET["name"];
+		$sql = "SELECT * FROM item WHERE itemName LIKE '%$para%'";
+		$result = mysqli_query($conn, $sql);
+		$items = array();
+		if (mysqli_num_rows($result) == 0) {
+			echo "Items not found";
+		} else {
+			while ($row = mysqli_fetch_assoc($result)) {
+				$items[] = $row;
+			}
+			echo json_encode($items);
+		};
+	}
+	 else {
 		// get all items
 		$sql = "SELECT * FROM item";
 		$result = mysqli_query($conn, $sql);

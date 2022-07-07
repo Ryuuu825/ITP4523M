@@ -24,6 +24,7 @@
         ></script>
         <!-- cdn of jquery -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <link rel="shortcut icon" href="../main.ico" type="image/x-icon">
         <style>
             .list-group-item {
                 padding: 30px;
@@ -83,10 +84,33 @@
                 
 
                 // calculate the total price
-                curr = $("#price").text();
-                new_price = parseInt(curr) + parseInt(price);
-                $("#price").text(new_price);
-                $("#price_modal").text($("#price").text());
+                oldprice = parseInt($("#price").text());
+                $.ajax({
+                    url:"http://127.0.0.1:8080/api/discountCalculator?discount="+oldprice,
+                    type:"GET",
+                    dataTpye : "json",
+                    crossDomin: true,
+                    success:function(data)
+                    {
+                        curr = price
+                        new_price = (parseInt(curr) + parseInt(oldprice)) * (1+data.discount);
+                        new_price = Math.floor(new_price * 100) / 100;
+                        
+                        if (data.discount != 0)
+                        {
+                            // disable the new_price to be some many float
+                            $("#price").html(new_price+`<span class='fs-6 mx-3'>discount: ${data.discount*100}%<span>`);
+                        }
+                        else 
+                        {
+                            $("#price").html(new_price);
+                        }
+                   
+
+                        $("#price_modal").text($("#price").text());
+                    }
+                 })
+                
 
                 // check if the item is already in the cart
                 var isInCart = false;
@@ -133,14 +157,42 @@
                 $.ajax({
                     accepts: "application/json",
                     method: "GET",
-                    url: "../php/search.php",
-                    data: {
-                        search: $("#search").val()
+                    dataType:"json",
+                    url: "../php/itemController.php?name="+$("input[name=name]").val(),
+                    success: (data) => {
+                        if (data == "Items not found")
+                        {
+                            $("#items_list").html("")
+                        }
+                        console.log($("#item_list").html())
+                        str = "";
+                        console.log(data)
+                        $("#items_list").html("")
+                        
+                        for(i = 0 ; i < data.length ; i++)
+                        {
+                            //  $item_name =  str_replace("\"", " ", $item_name);
+                            name = data[i].itemName;
+                            name = name.replace(/\"/g, " ");
+                            str += `
+                                <div class="card col-3 mx-2 my-2" style="width: 18rem">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                ${name}
+                                            </h5>
+                                            <input type="hidden" value="${data[i].stockQuantity}" name="${data[i].itemID}_stock">
+                                            <a
+                                                href="#"
+                                                class="btn btn-primary text-white"
+                                                onclick="addToCart('${data[i].itemID}' , '${name}' , '${data[i].price}')"
+                                                >Add to cart</a
+                                            >
+                                        </div>
+                                    </div>
+                            `;
+                        }
+                        $("#items_list").html(str)
                     }
-                }).fail(()=>{
-                    console.log("error");
-                }).done(() => {
-                    console.log("success");
                 });
             }
 
@@ -184,28 +236,27 @@
                         >
                     </button>
                 </div>
-                <div class="h-100" style="overflow-x: scroll">
-                    <ul class="list-group w-100" id="cart">
+                <div class="border border-1" style="height:90%">
+                    <ul class="list-group w-100 " id="cart">
                     </ul>
                 </div>
             </div>
             <div class="col">
                 <div class="d-flex justify-content-between">
-                    <h3>Shopping cart</h3>
+                    <h3>Items</h3>
                     <div class="d-flex" role="search">
                         <input
                             class="form-control me-2"
-                            type="search"
+                            type="text"
                             placeholder="Search"
+                            name="name"
                             aria-label="Search"
+                            oninput="search()"
                         />
-                        <button class="btn btn-outline-success" type="submit" onclick="search()">
-                            search
-                        </button>
                     </div>
                 </div>
 
-                <div class="row mt-3">
+                <div class="row mt-4" id="items_list">
 
                 <?php 
                     $sql;
@@ -258,7 +309,6 @@
                     <div class="modal-header">
                         <h5 class="modal-title" id="confirm_modal_label">
                             Do you sure?
-                            <!-- <?php echo $item['name']; ?> -->
                         </h5>
                         <button
                             type="button"
@@ -284,7 +334,6 @@
                 </div>
             </div>
         </div>
-        <div style="height:200px"></div>
         <div w3-include-html="footer.html"></div>
     </body>
 </html>
