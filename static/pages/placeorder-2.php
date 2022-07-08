@@ -1,3 +1,15 @@
+<?php 
+    include_once("../php/helper.php");
+    check_is_login();
+?>
+<?php 
+    if(empty($_POST))
+    {
+        include_once("../php/http_helper.php");
+        redirect("./placeorder.php");
+        exit();
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -90,10 +102,6 @@
             });
         }
     </script>
-    <?php
-    include_once("../php/helper.php");
-    check_is_login();
-    ?>
 </head>
 
 <body onload="w3.includeHTML();">
@@ -236,7 +244,7 @@
             </form>
         </div>
     </div>
+    
     <div w3-include-html="footer.html"></div>
-</body>
-
+    </body>
 </html>
