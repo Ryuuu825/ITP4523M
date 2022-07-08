@@ -46,7 +46,8 @@ check_is_login();
       </div>
       <form class="d-flex g-3 flex-row justify-content-center align-content-center" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="Get">
         <div class="w-75">
-          <input list="mydatalist" type="text" class="form-control p-3 rounded-5" placeholder="Enter some keyword here..." name="email" oninput="perform_search()">
+          <input list="mydatalist" type="text" class="form-control p-3 rounded-5" placeholder="Enter some keyword here..." name="email" oninput="perform_search()"
+                  value="<?php if (isset($_GET["email"])) echo $_GET["email"] ?>">
         </div>
         <div class="mt-2 mx-5">
           <button type="submit" class="btn btn-primary mb-3 text-white">Search</button>

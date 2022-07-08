@@ -62,6 +62,8 @@
                 <th scope="col">Name</th>
                 <th scope="col">Email</th>
                 <th scope="col">Number</th>
+                <th>Action</th>
+                <th scope="col">View Order</th>
               </tr>
             </thead>
             <tbody>
@@ -73,6 +75,7 @@
               $id = 0 ;
               while ($row = mysqli_fetch_assoc($result)) {
                 extract($row);
+                // http://localhost:9999/pages/order_detail.php?id=2
                 echo <<<EOD
                 <tr>
                   <th scope="row">$id</th>
@@ -80,6 +83,7 @@
                   <td>$customerEmail</td>
                   <td>$phoneNumber</td>
                   <td><a href="#" class="link-danger" data-bs-toggle="modal" data-bs-target="#modal" onclick="setId('$customerEmail')">delete</a></td>
+                  <td><a href="/pages/order.php?email=$customerEmail" class="link-info">view</a></td>
                 </tr>
                 EOD;
                 $id++;
@@ -100,7 +104,6 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalLabel">
                        Are you sure? <br>All related order will be deleted.
-                      <!-- <?php echo $item['name']; ?> -->
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
