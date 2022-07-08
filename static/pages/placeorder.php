@@ -90,10 +90,6 @@
                     $("#"+id+"_card").remove();
                     cart = cart.filter(item => item !== id.toString())
                     $("#form_data input[name="+id+"]").remove();
-                    total_price = 0;
-                    $("#price").html(total_price);
-                    $("#price_modal").html(total_price);
-                    return;
                 }
 
                 // add the quantity
@@ -142,7 +138,6 @@
             function addToCart(itemid , item_name , price ) {
                 if (!check_enough_stock(itemid,1)) return;
                 
-
                 // check if the item is already in the cart
                 var isInCart = false;
                 for (var i = 0; i < cart.length; i++) {
@@ -243,7 +238,7 @@
                 // delete the form data except the submitted button
                 $("#form_data").find("input:not([type=button]):not([type=submit]):not([type=reset])").remove();
                 total_price = 0;
-
+                total = 0;
             }
 
 
