@@ -253,10 +253,11 @@
                 {
                     alert("Your cart is empty");
                     // prevent the form from submitting
-
-                    return false;
                 }
-                return true;
+                else 
+                {
+                    $("#confirm_modal"). modal("toggle");
+                }
             }
         </script>
     </head>
@@ -268,8 +269,7 @@
             <a href="#">
                 <button
                     class="btn btn-primary float-end"
-                    data-bs-toggle="modal"
-                    data-bs-target="#confirm_modal"
+                    onclick="check_cart_isempty()"
                 >
                     <span class="text-white">Next</span>
                 </button>
@@ -312,8 +312,7 @@
                     </div>
                 </div>
 
-                <div class="row mt-4" id="items_list" style="height:90%; overflow-y:auto">
-
+                <div class="row mt-4" id="items_list" style="overflow-y:auto">
                 <?php 
                     $sql = "SELECT * FROM `Item`";
                     $res = mysqli_query($conn, $sql);
@@ -373,7 +372,7 @@
                     <div class="modal-footer">
                         <form action="./placeorder-2.php" method="POST" id="cart_form">
                             <div class="form-check" id="form_data">
-                                <input type="submit" value="OK" type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="return check_cart_isempty()">
+                                <input type="submit" value="OK" type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                             </div>
                         </form>
                     </div>
