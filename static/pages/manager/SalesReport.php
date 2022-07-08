@@ -34,12 +34,14 @@
 
         $(document).ready(
             function() {
-                curMonth = new Date().getMonth();
+                curMonth = new Date().getMonth() + 1;
                 if (curMonth < 10) {
                     curMonth = "0" + curMonth;
                 }
-                monthStr = new Date().getFullYear + "-" + curMonth;
-                getByMonth(monthStr);
+                selectedMonth = new Date().getFullYear() + "-" + curMonth;
+                console.log(selectedMonth);
+                getByMonth(selectedMonth);
+                $('#datepicker').find("input").val(selectedMonth);
                 $('#datepicker').datepicker({
                     format: "yyyy-mm",
                     viewMode: "months",
@@ -49,12 +51,13 @@
                     todayHighlight: true,
                     orientation: "bottom auto",
                     todayBtn: "linked",
+                    defaultDate: new Date()
                 }).on('changeDate', function(e) {
                     getByMonth(e.format());
                     selectedMonth = e.format();
                     $("#orderRecord").css("display", "none");
                     $(".staff-info").val("");
-                });
+                })
             }
         );
 
@@ -94,6 +97,7 @@
                         infos[1].value = dummyData[idx].staffName;
                         infos[2].value = dummyData[idx].noOfOrders;
                         infos[3].value = dummyData[idx].totalAmount;
+                        getOrders();
                     }
                 }
             );
@@ -129,6 +133,9 @@
                         dummyData = data;
                         staff[i] = staffID;
                         orders[i] = noOfOrders;
+                    }
+                    if (myChart != null) {
+                        myChart.destroy();
                     }
                     initChart();
                 },
@@ -228,7 +235,7 @@
             </div>
         </nav>
     </div>
-    <div class="row">
+    <div class="row mb-5 pb-5">
         <div class="col-4">
             <div class="my-5 mx-5">
                 <div class="h1 text-center">Sales Chart</div>
@@ -289,7 +296,7 @@
                 </div>
             </div>
         </div>
-        <div id="orderRecord" class="mx-auto order mx-5" style="width: 90%;display: none;margin-bottom: 100px;">
+        <div id="orderRecord" class="mx-auto order mx-5" style="width: 90%;display: none;">
             <div class="h2 text-center">
                 Sales Orders
             </div>
