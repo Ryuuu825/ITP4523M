@@ -63,7 +63,12 @@
                 <th scope="col">Name</th>
                 <th scope="col">Email</th>
                 <th scope="col">Number</th>
-                <th>Action</th>
+                <?php 
+                  if($_SESSION["position"] == "Manager")
+                  {
+                    echo "<th>Action</th>";
+                  }
+                ?>
                 <th scope="col">View Order</th>
               </tr>
             </thead>
@@ -83,9 +88,14 @@
                   <td>$customerName</td>
                   <td>$customerEmail</td>
                   <td>$phoneNumber</td>
-                  <td><a href="#" class="link-danger" data-bs-toggle="modal" data-bs-target="#modal" onclick="setId('$customerEmail')">delete</a></td>
+                EOD;
+                  if($_SESSION["position"] == "Manager")
+                  {
+                    echo " <td><a href='#' class='link-danger' data-bs-toggle='modal' data-bs-target='#modal' onclick='setId('$customerEmail')'>delete</a></td>";
+                  };
+                echo <<<EOD
                   <td><a href="./order.php?email=$customerEmail" class="link-info">view</a></td>
-                </tr>
+                  </tr>
                 EOD;
                 $id++;
               }
