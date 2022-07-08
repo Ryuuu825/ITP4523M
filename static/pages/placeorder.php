@@ -242,6 +242,7 @@
                 $("#price_modal").text("0");
                 // delete the form data except the submitted button
                 $("#form_data").find("input:not([type=button]):not([type=submit]):not([type=reset])").remove();
+                total_price = 0;
 
             }
         </script>
