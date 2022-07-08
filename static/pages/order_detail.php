@@ -208,7 +208,7 @@
         if ($need_delivery)
         {
             echo <<<EOF
-                <button class="h2 btn btn-dark text-white px-3 p-2 rounded shadow" onclick="allowEdit()">
+                <button class="h2 btn btn-dark text-white px-3 p-2 mx-2 rounded shadow" onclick="allowEdit()">
                     <span id="edit_prompt">Edit</span>
                 </button>
             EOF;
