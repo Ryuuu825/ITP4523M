@@ -30,7 +30,7 @@ if (empty($_POST)) {
             -webkit-appearance: none;
             margin: 0;
         }
-  
+
         input[type=number] {
             -moz-appearance: textfield;
         }
@@ -54,7 +54,7 @@ if (empty($_POST)) {
         }
     </style>
     <script>
-        $(document).ready(function(){
+        $(document).ready(function() {
             $("#deliveryDate").attr('min', new Date().toISOString().split("T")[0]);
         });
 
@@ -139,35 +139,40 @@ if (empty($_POST)) {
         <button class="btn btn-primary float-end" onclick="return submitForm();">
             <span class="text-white">Place</span>
         </button>
-
-        <span class="h2 float-end mx-3">
-            <?php
-            if (!empty($_POST)) {
-                extract($_POST);
-                include_once("../php/conn.php");
-                include_once("../php/CallDiscount.php");
-                $conn = get_db_connection();
-                $orderItems = array();
-                $totalAmount = 0.0;
-                foreach ($_POST as $oiID => $qty) {
-                    $orderItems[] = array(
-                        "oiID" => (int)$oiID,
-                        "qty" => (int)$qty
-                    );
-                    $sql = "SELECT price*{$qty} AS `Amount` FROM item WHERE itemId = {$oiID}";
-                    $result = mysqli_query($conn, $sql);
-                    $row = mysqli_fetch_assoc($result);
-                    $totalAmount += (float)($row['Amount']);
-                }
-                $discount = getDiscount($totalAmount);
-                $preDiscount = 1 - $discount;
-                $totalAmount *= $preDiscount;
-                echo "$" . $totalAmount;
-            ?>
-        </span>
-        <span class="h2 float-end mx-3">
-            Total:
-        </span>
+        <?php
+        if (!empty($_POST)) {
+            extract($_POST);
+            include_once("../php/conn.php");
+            include_once("../php/CallDiscount.php");
+            $conn = get_db_connection();
+            $orderItems = array();
+            $totalAmount = 0.0;
+            foreach ($_POST as $oiID => $qty) {
+                $orderItems[] = array(
+                    "oiID" => (int)$oiID,
+                    "qty" => (int)$qty
+                );
+                $sql = "SELECT price*{$qty} AS `Amount` FROM item WHERE itemId = {$oiID}";
+                $result = mysqli_query($conn, $sql);
+                $row = mysqli_fetch_assoc($result);
+                $totalAmount += (float)($row['Amount']);
+            }
+            $discount = getDiscount($totalAmount);
+            $preDiscount = 1 - $discount;
+            $showDiscount = $discount * 100;
+            $totalAmount *= $preDiscount;
+        ?>
+            <span class="h2 float-end mx-3"> $
+                <span id="price">
+                    <?php echo $totalAmount ?>
+                    <span class='fs-6 mx-3'>
+                        <?php echo "discount: " . $showDiscount . "%" ?>
+                    </span>
+                </span>
+            </span>
+            <span class="h2 float-end mx-3">
+                Total:
+            </span>
     </div>
     <a href="./placeorder.php">
         <button class="btn btn-secondary mx-5">
@@ -192,7 +197,7 @@ if (empty($_POST)) {
                                     <th scope="col">Name</th>
                                     <th scope="col" style="text-align: center;">Price</th>
                                     <th scope="col" style="text-align: center;">Qty</th>
-                                    <th scope="col" style="text-align: center;">Sold Price</th>
+                                    <th scope="col" style="text-align: center;">Amount</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -201,7 +206,7 @@ if (empty($_POST)) {
                             for ($i = 1; $i <= count($orderItems); $i++) {
                                 $oiID = $orderItems[$i - 1]["oiID"];
                                 $qty = $orderItems[$i - 1]["qty"];
-                                $sql = "SELECT `itemName`,`price`, price*{$qty}*{$preDiscount} AS `soldPrice` FROM item WHERE itemId = {$oiID}";
+                                $sql = "SELECT `itemName`,`price` AS `soldPrice`, price*{$qty} AS `amount` FROM item WHERE itemId = {$oiID}";
                                 $result = mysqli_query($conn, $sql);
                                 $row = mysqli_fetch_assoc($result);
                                 $ois[] = array(
@@ -213,9 +218,9 @@ if (empty($_POST)) {
                                     <tr>
                                     <th scope="row">{$i}</th>
                                     <td>{$row['itemName']}</td>
-                                    <td style="text-align: center;">\${$row['price']}</td>
-                                    <td style="text-align: center;">{$qty}</td>
                                     <td style="text-align: center;">\${$row['soldPrice']}</td>
+                                    <td style="text-align: center;">{$qty}</td>
+                                    <td style="text-align: center;">\${$row['amount']}</td>
                                     </tr>
                                 EOD;
                             }
