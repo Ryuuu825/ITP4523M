@@ -207,6 +207,15 @@
                                 Orders
                             </a>
                         </li>
+                        <?php
+                if ($_SESSION["position"] == "Manager") {
+                  echo '<li class="nav-item">
+                  <a class="nav-link text-black" href="./SalesReport.php">
+                      Reports
+                  </a>
+                </li>';
+                }
+              ?>
                     </ul>
                     <span>
                         <span class="text-black fs-5 mx-3"><?php echo $_SESSION['position'] ?> - <?php echo $_SESSION['staff_name'] ?></span>

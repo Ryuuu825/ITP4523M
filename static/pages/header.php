@@ -30,6 +30,16 @@
                     Orders
                 </a>
               </li>
+
+              <?php
+                if ($_SESSION["position"] == "Manager") {
+                  echo '<li class="nav-item">
+                  <a class="nav-link text-black" href="./Manager/SalesReport.php">
+                      Reports
+                  </a>
+                </li>';
+                }
+              ?>
               
             </ul>
             <span>
