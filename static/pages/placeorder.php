@@ -245,6 +245,19 @@
                 total_price = 0;
 
             }
+
+
+            function check_cart_isempty()
+            {
+                if (cart.length == 0)
+                {
+                    alert("Your cart is empty");
+                    // prevent the form from submitting
+
+                    return false;
+                }
+                return true;
+            }
         </script>
     </head>
     <body onload="w3.includeHTML();">
@@ -360,7 +373,7 @@
                     <div class="modal-footer">
                         <form action="./placeorder-2.php" method="POST" id="cart_form">
                             <div class="form-check" id="form_data">
-                                <input type="submit" value="OK" type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                <input type="submit" value="OK" type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="return check_cart_isempty()">
                             </div>
                         </form>
                     </div>
