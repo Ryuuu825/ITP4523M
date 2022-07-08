@@ -168,7 +168,7 @@
 </head>
 
 <body onload="w3.includeHTML();">
-<div class="w-100">
+    <div class="w-100">
         <nav class="navbar navbar-expand-lg py-4" style="background-color:#e4e4e4">
             <div class="container-fluid">
                 <a class="navbar-brand" href="../index.php">
@@ -211,7 +211,7 @@
             </div>
         </nav>
     </div>
-    <div class="container mt-5" style="margin-bottom: 100px;">
+    <div class="container my-5 pb-5 mg-5">
         <div class="d-flex justify-content-between mb-3">
             <span class="text-primary h1">Goods</span>
             <a href="./additems.php">

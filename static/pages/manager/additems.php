@@ -60,9 +60,7 @@
 </head>
 
 <body onload="w3.includeHTML();">
-
-<div class="w-100">
-<div class="w-100">
+    <div class="w-100">
         <nav class="navbar navbar-expand-lg py-4" style="background-color:#e4e4e4">
             <div class="container-fluid">
                 <a class="navbar-brand" href="../index.php">
@@ -105,7 +103,7 @@
             </div>
         </nav>
     </div>
-    <div class="d-flex text-center justify-content-center align-content-center flex-column" style="height:80vh;">
+    <div class="d-flex text-center justify-content-center align-content-center flex-column mb-5 pb-5">
         <div class="mt-5">
             <h1 class="text-center">Add Items</h1>
         </div>
@@ -135,7 +133,7 @@
         </div>
     </div>
 
-    <div w3-include-html="../footer.html" style="margin-top:200px"></div>
+    <div w3-include-html="../footer.html"></div>
 </body>
 
 </html>

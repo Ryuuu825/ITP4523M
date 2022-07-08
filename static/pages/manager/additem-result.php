@@ -53,87 +53,86 @@
 
 <body onload="w3.includeHTML();">
     <div class="w-100">
-        <div class="w-100">
-            <nav class="navbar navbar-expand-lg py-4" style="background-color:#e4e4e4">
-                <div class="container-fluid">
-                    <a class="navbar-brand" href="../index.php">
-                        <img src="../../assert/main.png" alt="" width="30" height="24" class="d-inline-block align-text-top">
-                        The Better Limited
-                    </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav  me-auto mb-2 mb-lg-0">
-                            <li class="nav-item">
-                                <a class="nav-link active text-black" aria-current="page" href="./items.php">
-                                    Items
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-black" href="../placeorder.php">
-                                    Place Order
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-black" href="../account.php">
-                                    Accounts
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-black" href="../order.php">
-                                    Orders
-                                </a>
-                            </li>
-                        </ul>
-                        <span>
-                            <span class="text-black fs-5 mx-3"><?php echo $_SESSION['position'] ?> - <?php echo $_SESSION['staff_name'] ?></span>
-                            <a href="../../login.php" class="nav-link d-inline">
-                                <span class="text-black">Logout</span>
-                            </a>
-                        </span>
-                    </div>
-                </div>
-            </nav>
-        </div>
-        <div class="d-flex text-center justify-content-center align-content-center flex-column" style="height:70vh">
-            <div class="mt-6">
-                <h1 class="text-center">Created Items !</h1>
-            </div>
-            <div class="mx-auto mt-5 border rounded p-3 border-3" style="width:40%">
-                <div class="form-group mb-3">
-                    <label for="id" class="mb-2">Item ID</label>
-                    <input type="text" id="itemID" disable readonly class="form-control" value="">
-                </div>
-                <div class="form-group mb-3">
-                    <label for="itemname" class="mb-2">Item Name</label>
-                    <textarea type="textarea" id="name" disable readonly class="form-control"></textarea>
-                </div>
-                <div class="form-group mb-3">
-                    <label for="itemprice" class="mb-2">Item Description</label>
-                    <textarea type="textarea" disable readonly class="form-control" id="desc"></textarea>
-                </div>
-                <div class="form-group mb-3">
-                    <label for="qty" class="mb-2">Stock Quantity</label>
-                    <input type="number" id="qty" disable readonly class="form-control" value="">
-                </div>
-                <div class="form-group">
-                    <label for="price" class="mb-2 block">Goods Price</label>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">$</span>
-                        <input type="number" id="price" disable readonly class="form-control" value="">
-                    </div>
-                </div>
-
-                <a href="./items.php">
-                    <button class="btn btn-primary">
-                        <span class="text-white">Back</span>
-                    </button>
+        <nav class="navbar navbar-expand-lg py-4" style="background-color:#e4e4e4">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="../index.php">
+                    <img src="../../assert/main.png" alt="" width="30" height="24" class="d-inline-block align-text-top">
+                    The Better Limited
                 </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav  me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active text-black" aria-current="page" href="./items.php">
+                                Items
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-black" href="../placeorder.php">
+                                Place Order
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-black" href="../account.php">
+                                Accounts
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-black" href="../order.php">
+                                Orders
+                            </a>
+                        </li>
+                    </ul>
+                    <span>
+                        <span class="text-black fs-5 mx-3"><?php echo $_SESSION['position'] ?> - <?php echo $_SESSION['staff_name'] ?></span>
+                        <a href="../../login.php" class="nav-link d-inline">
+                            <span class="text-black">Logout</span>
+                        </a>
+                    </span>
+                </div>
             </div>
+        </nav>
+    </div>
+    <div class="d-flex text-center justify-content-center align-content-center flex-column mb-5 pb-5">
+        <div class="mt-5">
+            <h1 class="text-center">Created Items !</h1>
         </div>
+        <div class="mx-auto mt-5 border rounded p-3 border-3" style="width:40%">
+            <div class="form-group mb-3">
+                <label for="id" class="mb-2">Item ID</label>
+                <input type="text" id="itemID" disable readonly class="form-control" value="">
+            </div>
+            <div class="form-group mb-3">
+                <label for="itemname" class="mb-2">Item Name</label>
+                <textarea type="textarea" id="name" disable readonly class="form-control"></textarea>
+            </div>
+            <div class="form-group mb-3">
+                <label for="itemprice" class="mb-2">Item Description</label>
+                <textarea type="textarea" disable readonly class="form-control" id="desc"></textarea>
+            </div>
+            <div class="form-group mb-3">
+                <label for="qty" class="mb-2">Stock Quantity</label>
+                <input type="number" id="qty" disable readonly class="form-control" value="">
+            </div>
+            <div class="form-group">
+                <label for="price" class="mb-2 block">Goods Price</label>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">$</span>
+                    <input type="number" id="price" disable readonly class="form-control" value="">
+                </div>
+            </div>
 
-        <div w3-include-html="../footer.html"></div>
+            <a href="./items.php">
+                <button class="btn btn-primary">
+                    <span class="text-white">Back</span>
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <div w3-include-html="../footer.html"></div>
 </body>
 
 </html>

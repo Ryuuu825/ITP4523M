@@ -176,7 +176,7 @@
 </head>
 
 <body onload="w3.includeHTML();" style="overflow-x:hidden">
-<div class="w-100">
+    <div class="w-100">
         <nav class="navbar navbar-expand-lg py-4" style="background-color:#e4e4e4">
             <div class="container-fluid">
                 <a class="navbar-brand" href="../index.php">
@@ -299,7 +299,6 @@
                 </table>
             </div>
         </div>
-    </div>
     </div>
 
     <div w3-include-html="../footer.html"></div>
