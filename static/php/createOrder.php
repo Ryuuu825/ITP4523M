@@ -30,7 +30,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 	}
 	$rc = mysqli_fetch_assoc($result);
 	$nextid = (int)$rc['nextid'];
-	$sql = "INSERT INTO orders VALUES ('{$nextid}', '{$customerEmail}', '{$_SESSION['username']}', default, NULLIF('{$deliveryAddress}',''), NULLIF('{$deliveryDate}',''), '{$orderAmount}')";
+	if(isset($_POST['deliveryDate'])&& isset($_POST['deliveryAddress'])){
+		$sql = "INSERT INTO orders VALUES ('{$nextid}', '{$customerEmail}', '{$_SESSION['username']}', default, NULLIF('{$deliveryAddress}',''), NULLIF('{$deliveryDate}',''), '{$orderAmount}')";
+	}else {
+		$sql = "INSERT INTO orders VALUES ('{$nextid}', '{$customerEmail}', '{$_SESSION['username']}', default, default, default, '{$orderAmount}')";
+	}
 	$result = mysqli_query($conn, $sql);
 
 	//create order items

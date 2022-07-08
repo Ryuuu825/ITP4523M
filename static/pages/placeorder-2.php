@@ -99,14 +99,38 @@ if (empty($_POST)) {
                     alert("Please enter the delivery date.");
                     return;
                 } else if ($("form #deliveryAddress").val() == "") {
-                    alert("Please enter the delievry address.");
+                    alert("Please enter the delivery address.");
                     return;
                 }
+                createDeliveryOrder();
+                return;
             }
-            createOrder();
+            createNormalOrder();
         }
 
-        function createOrder() {
+        function createNormalOrder() {
+            $.ajax({
+                type: "POST",
+                url: "../php/CreateOrder.php",
+                data: {
+                    orderItems: $("#orderItems").val(),
+                    orderAmount: $("#orderAmount").val(),
+                    customerName: $("#cusName").val(),
+                    customerEmail: $("#email").val(),
+                    phoneNumber: $("#cusPhone").val(),
+                },
+                success: function(data) {
+                    if (data == "Error") {
+                        alert("Create order failed.");
+                    } else {
+                        alert("Create order successfully.");
+                        window.location.href = "./order_detail.php?id=" + data;
+                    }
+                }
+            });
+        }
+
+        function createDeliveryOrder() {
             $.ajax({
                 type: "POST",
                 url: "../php/CreateOrder.php",
