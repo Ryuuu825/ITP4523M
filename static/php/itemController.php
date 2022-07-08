@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
     }
     $rc = mysqli_fetch_assoc($result);
     $nextid = $rc['nextid'];
-		$sql = "INSERT INTO item VALUES ('{$nextid}', '{$itemName}', '{$itemDescription}', '{$price}', '{$stockQuantity}')";
+		$sql = "INSERT INTO item VALUES ('{$nextid}', '{$itemName}', '{$itemDescription}', '{$stockQuantity}', '{$price}')";
 		$result = mysqli_query($conn, $sql);
 		if ($result) {
 			echo $nextid;
