@@ -63,8 +63,8 @@ check_is_login();
       <table class="table table-hover">
         <thead>
           <tr>
-            <th scope="col">Order ID</th>
-            <th scope="col">Customer's Name</th>
+            <th scope="col"><a class="text-black" href="<?php echo $_SERVER["PHP_SELF"] ?>?orderby=orderId">Order ID</a></th>
+            <th scope="col"><a class="text-black" href="<?php echo $_SERVER["PHP_SELF"] ?>?orderby=customerName">Customer's Name</a></th>
             <th scope="col">Order Date & Time</th>
           </tr>
         </thead>
@@ -72,8 +72,14 @@ check_is_login();
           <?php 
           $sql = "";
           if (isset($_GET["email"])) {
-            $sql = "SELECT `Customer`.`customerName`, `Orders`.* FROM `Customer` INNER JOIN `Orders` ON `Orders`.`customerEmail` = `Customer`.`customerEmail` WHERE `Customer`.`customerEmail` = '" . $_GET["email"] . "' ORDER BY `Customer`.`customerName` ASC";
-          } else {
+            $sql = "SELECT `Customer`.`customerName`, `Orders`.* FROM `Customer` INNER JOIN `Orders` ON `Orders`.`customerEmail` = `Customer`.`customerEmail` WHERE `Customer`.`customerEmail` = '" . $_GET["email"] . "' ORDER BY  `Customer`.`customerName` ASC";
+          }
+          else if (isset($_GET['orderby']))
+          {
+            $orderby = $_GET['orderby'];
+            $sql = "SELECT `Customer`.`customerName`, `Orders`.* FROM `Customer` INNER JOIN `Orders` ON `Orders`.`customerEmail` = `Customer`.`customerEmail` ORDER BY `" . $orderby . "` ASC";
+          } 
+          else {
             $sql = "SELECT `Customer`.`customerName`, `Orders`.* FROM `Customer` INNER JOIN `Orders` ON `Orders`.`customerEmail` = `Customer`.`customerEmail` ORDER BY `Customer`.`customerName` ASC;";
           }
           $result = $conn->query($sql);
