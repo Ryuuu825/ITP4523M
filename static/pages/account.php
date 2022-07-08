@@ -78,7 +78,7 @@
               $conn = get_db_connection();
               $sql = "SELECT * FROM `Customer`";
               $result = mysqli_query($conn, $sql);
-              $id = 0 ;
+              $id = 1 ;
               while ($row = mysqli_fetch_assoc($result)) {
                 extract($row);
                 // http://localhost:9999/pages/order_detail.php?id=2
@@ -128,4 +128,3 @@
 
     <div w3-include-html="footer.html"></div>
 </body>
-</html> 

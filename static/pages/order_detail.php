@@ -198,23 +198,23 @@
     <?php include_once "./header.php"; ?>
 
     <div class="m-5 py-3 border-bottom disappear-print">
-        <a href="<?php echo $_SERVER["HTTP_REFERER"] ?>" class="btn btn-secondary px-3 mb-2 p-2 rounded shadow">
+        <a href="<?php echo $_SERVER["HTTP_REFERER"] ?>" class="btn btn-secondary px-3 mx-1 mb-2 p-2 rounded shadow">
             Back
         </a>
-        <button class="h2 btn btn-primary text-white px-3 mx-2 p-2 rounded shadow" onclick="printReceipt()">
+        <button class="h2 btn btn-primary text-white px-3 mx-1 p-2 rounded shadow" onclick="printReceipt()">
             Print
         </button>
         <?php 
         if ($need_delivery)
         {
             echo <<<EOF
-                <button class="h2 btn btn-dark text-white px-3 p-2 mx-2 rounded shadow" onclick="allowEdit()">
+                <button class="h2 btn btn-dark text-white px-3 p-2 mx-1 rounded shadow" onclick="allowEdit()">
                     <span id="edit_prompt">Edit</span>
                 </button>
             EOF;
         }
         ?>
-        <button class="h2 btn btn-danger text-white px-3 p-2 rounded shadow" data-bs-toggle="modal" data-bs-target="#modal">
+        <button class="h2 btn btn-danger text-white px-3 mx-1 p-2 rounded shadow" data-bs-toggle="modal" data-bs-target="#modal">
             Delete
         </button>
         
@@ -247,15 +247,15 @@
                         </thead>
                         <tbody>
                             <?php 
-                                for($i = 0 ; $i < count($rows) ; $i++)
+                                for($i = 1 ; $i <= count($rows) ; $i++)
                                 {
-                                    $price = $rows[$i]['soldPrice'] / $rows[$i]['orderQuantity'];
+                                    $price = $rows[$i-1]['soldPrice'] / $rows[$i-1]['orderQuantity'];
                                     echo <<<EOF
                                         <tr>
                                             <th scope="row">$i</th>
-                                            <td>{$rows[$i]['itemName']}</td>
+                                            <td>{$rows[$i-1]['itemName']}</td>
                                             <td>$price</td>
-                                            <td>{$rows[$i]['orderQuantity']}</td>
+                                            <td>{$rows[$i-1]['orderQuantity']}</td>
                                         </tr>
                                     EOF;
                                 };

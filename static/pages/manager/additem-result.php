@@ -38,9 +38,6 @@
                     $("#desc").val(data.itemDescription);
                     $("#qty").val(data.stockQuantity);
                     $("#price").val(data.price);
-                },
-                error: function(err) {
-                    console.log(err);
                 }
             });
         }

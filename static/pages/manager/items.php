@@ -97,9 +97,6 @@
 							</tr>`
                     }
                     body.append(code);
-                },
-                error: function(err) {
-                    console.log(err);
                 }
             });
         }
