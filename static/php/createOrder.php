@@ -30,18 +30,21 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 	}
 	$rc = mysqli_fetch_assoc($result);
 	$nextid = (int)$rc['nextid'];
-	if(isset($_POST['deliveryDate'])&& isset($_POST['deliveryAddress'])){
+	if (isset($_POST['deliveryDate']) && isset($_POST['deliveryAddress'])) {
 		$sql = "INSERT INTO orders VALUES ('{$nextid}', '{$customerEmail}', '{$_SESSION['username']}', default, NULLIF('{$deliveryAddress}',''), NULLIF('{$deliveryDate}',''), '{$orderAmount}')";
-	}else {
+	} else {
 		$sql = "INSERT INTO orders VALUES ('{$nextid}', '{$customerEmail}', '{$_SESSION['username']}', default, default, default, '{$orderAmount}')";
 	}
-	$result = mysqli_query($conn, $sql);
+	mysqli_query($conn, $sql);
 
-	//create order items
 	$ois = json_decode($orderItems, true);
 	foreach ($ois as $item) {
+		//create order items
 		$sql = "INSERT INTO itemorders VALUES ('{$nextid}', '{$item['oiID']}', '{$item['qty']}', '{$item['soldPrice']}')";
-		$result = mysqli_query($conn, $sql);
+		mysqli_query($conn, $sql);
+		//update stock
+		$sql = "UPDATE item SET stockQuantity = stockQuantity - '{$item['qty']}' WHERE itemID = '{$item['oiID']}'";
+		mysqli_query($conn, $sql);
 	}
 
 	if ($result) {
@@ -49,8 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 	} else {
 		echo "Error";
 	};
-
-	if (isset($conn)) {
-		mysqli_close($conn);
-	}
+	mysqli_free_result($result);
+	mysqli_close($conn);
 }
+?>
