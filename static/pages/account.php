@@ -99,7 +99,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalLabel">
-                       Do you sure? All related order will be deleted
+                       Are you sure? <br>All related order will be deleted.
                       <!-- <?php echo $item['name']; ?> -->
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

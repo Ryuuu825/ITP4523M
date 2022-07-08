@@ -179,7 +179,7 @@
     <div class="w-100">
         <nav class="navbar navbar-expand-lg py-4" style="background-color:#e4e4e4">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="../index.php">
                     <img src="../../assert/main.png" alt="" width="30" height="24" class="d-inline-block align-text-top">
                     The Better Limited
                 </a>
@@ -189,7 +189,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav  me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active text-black" aria-current="page" href="#">
+                            <a class="nav-link active text-black" aria-current="page" href="./items.php">
                                 Items
                             </a>
                         </li>
@@ -203,15 +203,15 @@
                                 Accounts
                             </a>
                         </li>
-                        <li class="nav-item text-black">
+                        <li class="nav-item">
                             <a class="nav-link text-black" href="../order.php">
                                 Orders
                             </a>
                         </li>
                     </ul>
                     <span>
-                        <span class="text-black fs-5 mx-3">Staff - Ken</span>
-                        <a href="../../index.html" class="nav-link d-inline">
+                        <span class="text-black fs-5 mx-3"><?php echo $_SESSION['position'] ?> - <?php echo $_SESSION['staff_name'] ?></span>
+                        <a href="../../login.php" class="nav-link d-inline">
                             <span class="text-black">Logout</span>
                         </a>
                     </span>
@@ -299,7 +299,6 @@
                 </table>
             </div>
         </div>
-    </div>
     </div>
 
     <div w3-include-html="../footer.html"></div>

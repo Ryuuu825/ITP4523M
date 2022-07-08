@@ -11,18 +11,24 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="../../js/w3.js"></script>
   <!-- JavaScript Bundle with Popper -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous">
   </script>
 </head>
-<script>
+<script type="text/javascript">
+  <?php
+  session_start();
+  if (empty($_SESSION["username"])) {
+    header("Location: ../401.html");
+    exit;
+  }
+  ?>
   //request get all items from database
   function getAll() {
     $.ajax({
       url: "../../php/itemController.php",
       type: "GET",
       dataType: "json",
-      success: function (data) {
+      success: function(data) {
         let body = $("tbody");
         let code = "";
         for (let i = 0; i < data.length; i++) {
@@ -43,7 +49,7 @@
         }
         body.append(code);
       },
-      error: function (err) {
+      error: function(err) {
         console.log(err);
       }
     });
@@ -57,7 +63,7 @@
       data: {
         itemID: id
       },
-      success: function (data) {
+      success: function(data) {
         let item = data;
         let id = item.itemID;
         let name = item.itemName;
@@ -69,22 +75,62 @@
         $("#data #qty").text(qty);
         $("#data #price").text(price);
       },
-      error: function (err) {
+      error: function(err) {
         console.log(err);
       }
     });
   }
 
-  $(document).ready(function () {
+  $(document).ready(function() {
     getAll();
   });
-
 </script>
 
 <body onload="w3.includeHTML();">
-  <div w3-include-html="../header.html"></div>
-
-  <div class="container mt-5">
+  <div class="w-100">
+    <nav class="navbar navbar-expand-lg py-4" style="background-color:#e4e4e4">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="../index.php">
+          <img src="../../assert/main.png" alt="" width="30" height="24" class="d-inline-block align-text-top">
+          The Better Limited
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav  me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active text-black" aria-current="page" href="./items.php">
+                Items
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-black" href="../placeorder.php">
+                Place Order
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-black" href="../account.php">
+                Accounts
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-black" href="../order.php">
+                Orders
+              </a>
+            </li>
+          </ul>
+          <span>
+            <span class="text-black fs-5 mx-3"><?php echo $_SESSION['position'] ?> - <?php echo $_SESSION['staff_name'] ?></span>
+            <a href="../../login.php" class="nav-link d-inline">
+              <span class="text-black">Logout</span>
+            </a>
+          </span>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <div class="container my-5 pb-5">
     <div class="d-flex justify-content-between mb-3">
       <span class="text-primary h1">Goods</span>
     </div>

@@ -24,7 +24,7 @@
     <div class="d-flex align-items-center flex-column justify-content-center" style="height:100vh">
         <h2>Welcome Back! <?php echo $_SESSION['staff_name'] ?> </h2>
         <div class="list-group w-25 mt-5 mb-5">
-            <a class="list-group-item list-group-item-action" href="./manager/items.php">
+            <a class="list-group-item list-group-item-action" href="./<?php echo $_SESSION['position'] ?>/items.php">
                 Item
             </a>
             <a class="list-group-item list-group-item-action" href="./placeorder.php">
@@ -33,7 +33,7 @@
             <a class="list-group-item list-group-item-action" href="./account.php">
                 Accounts
             </a>
-            <a  class="list-group-item list-group-item-action" href="./order.php.html">
+            <a  class="list-group-item list-group-item-action" href="./order.php">
                 Orders
             </a>
         </div>

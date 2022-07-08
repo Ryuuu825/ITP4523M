@@ -1,8 +1,8 @@
 <div class="w-100">
     <nav class="navbar navbar-expand-lg py-4" style="background-color:#e4e4e4">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="../../assert/main.png" alt="" width="30" height="24" class="d-inline-block align-text-top">
+            <a class="navbar-brand" href="./index.php">
+                <img src="../assert/main.png" alt="" width="30" height="24" class="d-inline-block align-text-top">
                 The Better Limited
             </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -11,7 +11,7 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav  me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active text-black" aria-current="page" href="./manager/items.php">
+                <a class="nav-link active text-black" aria-current="page" href="./<?php echo $_SESSION['position']?>/items.php">
                     Items
                 </a>
               </li>
