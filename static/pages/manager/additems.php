@@ -109,7 +109,7 @@
         </div>
         <div class="mx-auto mt-5 border rounded p-3 border-3" style="width:40%">
             <div class="form-group mb-3">
-                <label for="itemname" class="mb-2">Item Name*</label>
+                <label for="name" class="mb-2">Item Name*</label>
                 <textarea type="text" class="form-control" id="name" name="itemName" style="resize:none" rows="2" required placeholder="Item Name"></textarea>
             </div>
             <div class="form-group mb-3">
@@ -121,10 +121,10 @@
                 <input type="number" class="form-control" id="qty" name="stockQuantity" required placeholder="Item Quantity">
             </div>
             <div class="form-group">
-                <label for="itemprice" class="mb-2 block">Price*</label>
+                <label for="price" class="mb-2 block">Price*</label>
                 <div class="input-group mb-3">
                     <span class="input-group-text">$</span>
-                    <input type="number" class="form-control" id="price" name="price" placeholder="price" required id="itemprice">
+                    <input type="number" class="form-control" id="price" name="price" placeholder="price" required>
                 </div>
             </div>
             <div>

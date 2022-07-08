@@ -278,7 +278,7 @@
             <span class="h2 float-end mx-3"> $ <span id="price">0</span> </span>
             <span class="h2 float-end mx-3"> Total: </span>
         </div>
-        <div class="row w-100" style="height: 75vh" style="position: relative">
+        <div class="row w-100 mb-5 pb-5" style="height: 75vh" style="position: relative">
             <div class="col-3 h-100 mx-5" style="margin-left: 25px;">
                 <div
                     class="d-flex align-content-center justify-content-between mb-3"
@@ -292,12 +292,12 @@
                         >
                     </button>
                 </div>
-                <div class="border border-1" style="height:90%">
+                <div class="border border-1" style="height:90%; overflow-y:auto">
                     <ul class="list-group w-100 " id="cart">
                     </ul>
                 </div>
             </div>
-            <div class="col">
+            <div class="col h-100">
                 <div class="d-flex justify-content-between">
                     <h3>Items</h3>
                     <div class="d-flex" role="search">
@@ -312,7 +312,7 @@
                     </div>
                 </div>
 
-                <div class="row mt-4" id="items_list">
+                <div class="row mt-4" id="items_list" style="height:90%; overflow-y:auto">
 
                 <?php 
                     $sql = "SELECT * FROM `Item`";

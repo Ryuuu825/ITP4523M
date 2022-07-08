@@ -101,15 +101,15 @@
         </div>
         <div class="mx-auto mt-5 border rounded p-3 border-3" style="width:40%">
             <div class="form-group mb-3">
-                <label for="id" class="mb-2">Item ID</label>
+                <label for="itemID" class="mb-2">Item ID</label>
                 <input type="text" id="itemID" disable readonly class="form-control" value="">
             </div>
             <div class="form-group mb-3">
-                <label for="itemname" class="mb-2">Item Name</label>
+                <label for="name" class="mb-2">Item Name</label>
                 <textarea type="textarea" id="name" disable readonly class="form-control"></textarea>
             </div>
             <div class="form-group mb-3">
-                <label for="itemprice" class="mb-2">Item Description</label>
+                <label for="desc" class="mb-2">Item Description</label>
                 <textarea type="textarea" disable readonly class="form-control" id="desc"></textarea>
             </div>
             <div class="form-group mb-3">
