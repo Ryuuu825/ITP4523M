@@ -247,15 +247,15 @@
                         </thead>
                         <tbody>
                             <?php 
-                                for($i = 0 ; $i < count($rows) ; $i++)
+                                for($i = 1 ; $i <= count($rows) ; $i++)
                                 {
-                                    $price = $rows[$i]['soldPrice'] / $rows[$i]['orderQuantity'];
+                                    $price = $rows[$i-1]['soldPrice'] / $rows[$i-1]['orderQuantity'];
                                     echo <<<EOF
                                         <tr>
                                             <th scope="row">$i</th>
-                                            <td>{$rows[$i]['itemName']}</td>
+                                            <td>{$rows[$i-1]['itemName']}</td>
                                             <td>$price</td>
-                                            <td>{$rows[$i]['orderQuantity']}</td>
+                                            <td>{$rows[$i-1]['orderQuantity']}</td>
                                         </tr>
                                     EOF;
                                 };
