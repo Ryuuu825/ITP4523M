@@ -1,4 +1,13 @@
 <?php
+
+/*
+    File: http_helper.php
+    Purpose: some helper functions for http response
+    Author: Lee Kai Pui
+    Date: 05/07/2022
+*/
+
+
 function redirect($url)
 {
     header('Location: '.$url);

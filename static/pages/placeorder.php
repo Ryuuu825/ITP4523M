@@ -89,12 +89,13 @@
                 {
                     $("#"+id+"_card").remove();
                     cart = cart.filter(item => item !== id.toString())
+                    // remove the item from hidden form data
                     $("#form_data input[name="+id+"]").remove();
                 }
 
                 // add the quantity
                 real_qty = curr_qty  + qty;
-                // and display to the user and the hidden input
+                // and display to the user and update the hidden input
                 $("#" + id + "_qty").text(real_qty ); 
                 $("#cart_form input[name=" + id + "]").val(real_qty);
 
@@ -156,7 +157,8 @@
                 cart.push(itemid);
 
                 changeQty(itemid, 1, price);
-
+                
+                // create the card and put it in shopping cart
                 var listGroup = document.getElementsByClassName("list-group");
                 // add item to list-group
                 var item = document.getElementById(itemid);
@@ -313,6 +315,7 @@
                     $res = mysqli_query($conn, $sql);
                     while($row = mysqli_fetch_assoc($res))
                     {
+                        // do not displace the item if the stock is 0
                         if ($row["stockQuantity"] <= 0)
                         {
                             continue;
@@ -365,6 +368,7 @@
                         <div class="fs-5">Total Price : $ <span id="price_modal">0</span> </div>
                     </div>
                     <div class="modal-footer">
+                        <!-- the hidden form that send to next pages -->
                         <form action="./placeorder-2.php" method="POST" id="cart_form">
                             <div class="form-check" id="form_data">
                                 <input type="submit" value="OK" type="button" class="btn btn-secondary" data-bs-dismiss="modal">

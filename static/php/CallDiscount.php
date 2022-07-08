@@ -1,4 +1,11 @@
 <?php
+/*
+    File: CallDiscount.php 
+    Purpose: call curl library to get discount
+    Author: Pan Rubin
+    Date: 04/06/2022
+*/
+
 function getDiscount($totalAmount)
 {
 	if (!extension_loaded("curl")) {

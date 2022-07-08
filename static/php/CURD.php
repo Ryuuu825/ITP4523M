@@ -1,5 +1,10 @@
 <?php 
-   
+/*
+    File: CURD.php 
+    Purpose: CURD operation for all tables
+    Author: Lee Kai Pui
+    Date: 05/07/2022
+*/
 
     function GETALL($table)
     {

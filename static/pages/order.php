@@ -45,6 +45,7 @@ check_is_login();
       </div>
       <form class="d-flex g-3 flex-row justify-content-center align-content-center" action="<?php echo $_SERVER["PHP_SELF"] ?>" method="Get">
         <div class="w-75">
+          <!-- insert value into placeholder if ?email={} is set -->
           <input list="mydatalist" type="text" class="form-control p-3 rounded-5" placeholder="Enter some keyword here..." name="email" oninput="perform_search()"
                   value="<?php if (isset($_GET["email"])) echo $_GET["email"] ?>">
         </div>
@@ -62,22 +63,31 @@ check_is_login();
       <table class="table table-hover">
         <thead>
           <tr>
-            <th scope="col"><a class="text-black" href="<?php echo $_SERVER["PHP_SELF"] ?>?orderby=orderId">Order ID</a></th>
-            <th scope="col"><a class="text-black" href="<?php echo $_SERVER["PHP_SELF"] ?>?orderby=customerName">Customer's Name</a></th>
+            <th scope="col"><a class="text-black" href="<?php echo $_SERVER["PHP_SELF"] ?>?orderby=orderId<?php if(isset($_GET['email'])) echo "&email=".$_GET['email'];  ?>">Order ID</a></th>
+            <th scope="col"><a class="text-black" href="<?php echo $_SERVER["PHP_SELF"] ?>?orderby=customerName<?php if(isset($_GET['email'])) echo "&email=".$_GET['email'] ;  ?>">Customer's Name</a></th>
             <th scope="col">Order Date & Time</th>
           </tr>
         </thead>
         <tbody id="result">
           <?php 
           $sql = "";
-          if (isset($_GET["email"])) {
+          // if email and orderby is set, search by email and order by $_GET['orderby']
+          if (isset($_GET["email"]) && isset($_GET['orderby']))
+          {
+            $orderby = $_GET['orderby'];
+            $sql =  "SELECT `Customer`.`customerName`, `Orders`.* FROM `Customer` INNER JOIN `Orders` ON `Orders`.`customerEmail` = `Customer`.`customerEmail` WHERE `Customer`.`customerEmail` = '" . $_GET["email"] . "' ORDER BY  `" . $orderby . "` ASC";
+          }
+          // search by email
+          else if (isset($_GET["email"])) {
             $sql = "SELECT `Customer`.`customerName`, `Orders`.* FROM `Customer` INNER JOIN `Orders` ON `Orders`.`customerEmail` = `Customer`.`customerEmail` WHERE `Customer`.`customerEmail` = '" . $_GET["email"] . "' ORDER BY  `Customer`.`customerName` ASC";
           }
+          // order by
           else if (isset($_GET['orderby']))
           {
             $orderby = $_GET['orderby'];
             $sql = "SELECT `Customer`.`customerName`, `Orders`.* FROM `Customer` INNER JOIN `Orders` ON `Orders`.`customerEmail` = `Customer`.`customerEmail` ORDER BY `" . $orderby . "` ASC";
           } 
+          // show all
           else {
             $sql = "SELECT `Customer`.`customerName`, `Orders`.* FROM `Customer` INNER JOIN `Orders` ON `Orders`.`customerEmail` = `Customer`.`customerEmail` ORDER BY `Customer`.`customerName` ASC;";
           }

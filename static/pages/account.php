@@ -22,7 +22,8 @@
           let targetId = "";
           function sendDELETE()
           {
-              
+              // send a DELETE request to the server
+              // and then reload the page
               $.ajax({
                   url: `../php/account_CURD.php?email=${targetId}`,
                   type: "DELETE",
@@ -101,8 +102,6 @@
                 EOD;
                 $id++;
               }
-
-
               mysqli_free_result($result);
               mysqli_close($conn);
               ?>

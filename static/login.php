@@ -17,6 +17,7 @@
 </head>
 <body class="bg-white">
 <?php 
+// check if the user is trying to log in
 $is_try_login = ! empty($_POST);
 require_once("./php/http_helper.php");
 require_once("./php/conn.php");
@@ -65,11 +66,8 @@ if ($is_try_login)
 
             // redirect to the homepage
             header("Location: ./pages/index.php");
-
             exit;
         }
-
-        $isLoginOk = false;
     }
     else
     {

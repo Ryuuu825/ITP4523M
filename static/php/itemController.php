@@ -1,4 +1,11 @@
 <?php
+/*
+    File: itemController.php
+    Purpose: restful api for item
+    Author: Lee Kai Pui, Pan Rubin
+    Date: 05/07/2022
+*/
+
 require_once('conn.php');
 require_once('helper.php');
 check_is_login();

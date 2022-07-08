@@ -123,6 +123,7 @@
         }
 
         <?php 
+        // show the function if the order needs delivery
         if ($need_delivery) {
             echo <<<EOF
                 let isEdit = false;
@@ -178,6 +179,8 @@
 
         function sendDELETE()
         {
+            // send the delete request to the server
+            // return to previous page
             $.ajax(
             {
                 url: "../php/order_CURD.php?id=<?php echo $id ?>",
@@ -198,6 +201,7 @@
     <?php include_once "./header.php"; ?>
 
     <div class="m-5 py-3 border-bottom disappear-print">
+        <!-- Go to previous page (url) by using php. Therefore, no resend form data -->
         <a href="<?php echo $_SERVER["HTTP_REFERER"] ?>" class="btn btn-secondary px-3 mx-1 mb-2 p-2 rounded shadow">
             Back
         </a>

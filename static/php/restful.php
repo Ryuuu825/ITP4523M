@@ -1,4 +1,11 @@
+
 <?php
+/*
+    File: restful.php
+    Purpose: restful api
+    Author: Lee Kai Pui
+    Date: 08/07/2022
+*/
 
     include_once("CURD.php");
     if ($_SERVER['REQUEST_METHOD'] == 'DELETE')

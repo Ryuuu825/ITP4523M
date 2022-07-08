@@ -1,4 +1,11 @@
 <?php 
+/*
+    File: order_CURD.php
+    Purpose: CURD operation for order
+    Author: Lee Kai Pui
+    Date: 05/07/2022
+*/
+
     include_once("conn.php");
     include_once("helper.php");
 

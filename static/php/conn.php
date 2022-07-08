@@ -1,4 +1,11 @@
 <?php 
+/*
+    File: conn.php 
+    Purpose: connect to database
+    Author: Lee Kai Pui
+    Date: 19/06/2022
+*/
+
     $host_name = "127.0.0.1";
     $database = "projectdb";
     $user_name = "root";
