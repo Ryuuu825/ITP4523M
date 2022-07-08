@@ -41,7 +41,7 @@
             if ($_SESSION['position'] == "Manager")
             {
                 echo '<a class="list-group-item list-group-item-action" href="./Manager/SalesReport.php">'
-                .'Report'
+                .'Reports'
                 .'</a>';
             }
             ?>
