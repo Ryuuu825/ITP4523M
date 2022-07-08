@@ -83,7 +83,7 @@
                   <td>$customerEmail</td>
                   <td>$phoneNumber</td>
                   <td><a href="#" class="link-danger" data-bs-toggle="modal" data-bs-target="#modal" onclick="setId('$customerEmail')">delete</a></td>
-                  <td><a href="/pages/order.php?email=$customerEmail" class="link-info">view</a></td>
+                  <td><a href="./order.php?email=$customerEmail" class="link-info">view</a></td>
                 </tr>
                 EOD;
                 $id++;
