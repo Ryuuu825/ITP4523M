@@ -21,7 +21,7 @@
     <?php include_once "./header.php"; ?>
 
     <!-- Welcome Back -->
-    <div class="d-flex align-items-center flex-column justify-content-center" style="height:100vh">
+    <div class="d-flex align-items-center flex-column justify-content-center mb-5 pb-3" style="height:100vh">
         <h2>Welcome Back! <?php echo $_SESSION['staff_name'] ?> </h2>
         <div class="list-group w-25 mt-5 mb-5">
             <a class="list-group-item list-group-item-action" href="./<?php echo $_SESSION['position'] ?>/items.php">
@@ -36,6 +36,14 @@
             <a  class="list-group-item list-group-item-action" href="./order.php">
                 Orders
             </a>
+            <?php 
+            if ($_SESSION['position'] == "Manager")
+            {
+                echo '<a class="list-group-item list-group-item-action" href="./Manager/SalesReport.php">'
+                .'Report'
+                .'</a>';
+            }
+            ?>
         </div>
     </div>
     <div w3-include-html="footer.html"></div>
