@@ -192,8 +192,8 @@
             </div>
         </div>
 
-        <div class="sub-form border rounded mt-5" style="margin-bottom:100px;">
-            <form class="mx-4 my-5" action="../php/CreateOrder.php" method="post">
+        <div class="sub-form border rounded mt-5" style="margin-bottom: 100px;">
+            <form class="m-4 my-5" action="../php/CreateOrder.php" method="post">
                 <!-- 
                     2.	Customer’s Email
                     3.	Staff ID
