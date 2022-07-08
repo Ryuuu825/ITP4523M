@@ -235,7 +235,7 @@
             </div>
         </nav>
     </div>
-    <div class="row mb-5 pb-5">
+    <div class="row mb-5 pb-3">
         <div class="col-4">
             <div class="my-5 mx-5">
                 <div class="h1 text-center">Sales Chart</div>
