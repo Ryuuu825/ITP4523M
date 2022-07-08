@@ -72,16 +72,33 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
 		echo "Error";
 	}
 } else if ($_SERVER['REQUEST_METHOD'] == "DELETE") {
-	// delete item
-	$sql = "DELETE FROM itemorders WHERE itemID = '{$_GET['itemID']}'";
-	$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
-	$sql = "DELETE FROM item WHERE itemID = '{$_GET['itemID']}'";
-	$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
-	if ($result) {
+	//find order by item id
+	if (isset($_GET["itemID"])) {
+		$itemID = $_GET["itemID"];
+		$sql = "SELECT orderID FROM itemorders WHERE itemID = '{$itemID}'";
+		$result = mysqli_query($conn, $sql);
+		if (mysqli_num_rows($result) == 0) {
+			$sql = "DELETE FROM item WHERE itemID = '{$_GET['itemID']}'";
+			$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+		} else {
+			while ($row = mysqli_fetch_assoc($result)) {
+				$sql = "SELECT itemID FROM itemorders WHERE orderID = '{$row['orderID']}'";
+				$res = mysqli_query($conn, $sql);
+				$sql = "DELETE FROM itemorders WHERE itemID = '{$_GET['itemID']}'";
+				mysqli_query($conn, $sql) or die(mysqli_error($conn));
+				$sql = "DELETE FROM item WHERE itemID = '{$_GET['itemID']}'";
+				mysqli_query($conn, $sql) or die(mysqli_error($conn));
+				if (mysqli_num_rows($res) <= 1) {
+					$sql = "DELETE FROM orders WHERE orderID = '{$row['orderID']}'";
+					mysqli_query($conn, $sql) or die(mysqli_error($conn));
+				}
+			}
+		};
+		mysqli_free_result($result);
 		echo "Success";
 	} else {
 		echo "Error";
-	};
+	}
 } else if ($_SERVER['REQUEST_METHOD'] == "PUT") {
 	// update item
 	parse_str(file_get_contents('php://input'), $_PUT);
