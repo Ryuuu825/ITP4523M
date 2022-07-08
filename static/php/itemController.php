@@ -26,6 +26,10 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
 			echo "Items not found";
 		} else {
 			while ($row = mysqli_fetch_assoc($result)) {
+				if ($row["stockQuantity"] <= 0)
+				{
+					continue;
+				}
 				$items[] = $row;
 			}
 			echo json_encode($items);
