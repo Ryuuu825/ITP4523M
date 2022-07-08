@@ -91,7 +91,9 @@
                 EOD;
                   if($_SESSION["position"] == "Manager")
                   {
-                    echo " <td><a href='#' class='link-danger' data-bs-toggle='modal' data-bs-target='#modal' onclick='setId('$customerEmail')'>delete</a></td>";
+                    echo <<<EOD
+                      <td><a href='#' class='link-danger' data-bs-toggle='modal' data-bs-target='#modal' onclick="setId('$customerEmail')">delete</a></td>
+                    EOD;
                   };
                 echo <<<EOD
                   <td><a href="./order.php?email=$customerEmail" class="link-info">view</a></td>
