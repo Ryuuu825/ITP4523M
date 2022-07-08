@@ -40,7 +40,6 @@
                     curMonth = "0" + curMonth;
                 }
                 selectedMonth = new Date().getFullYear() + "-" + curMonth;
-                console.log(selectedMonth);
                 getByMonth(selectedMonth);
                 $('#datepicker').find("input").val(selectedMonth);
                 $('#datepicker').datepicker({
@@ -174,9 +173,6 @@
                             </tr>`;
                     }
                     $("tbody").html(code);
-                },
-                error: function(err) {
-                    console.log(err);
                 }
             });
         }
