@@ -1,14 +1,13 @@
-<?php 
-    include_once("../php/helper.php");
-    check_is_login();
+<?php
+include_once("../php/helper.php");
+check_is_login();
 ?>
-<?php 
-    if(empty($_POST))
-    {
-        include_once("../php/http_helper.php");
-        redirect("./placeorder.php");
-        exit();
-    }
+<?php
+if (empty($_POST)) {
+    include_once("../php/http_helper.php");
+    redirect("./placeorder.php");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,6 +24,16 @@
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
     <style>
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+  
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+        
         .list-group-item {
             padding: 30px;
         }
@@ -44,6 +53,10 @@
         }
     </style>
     <script>
+        $(document).ready(function(){
+            $("#deliveryDate").attr('min', new Date().toISOString().split("T")[0]);
+        });
+
         function showDeliveryPickerForm() {
             var deliveryPicker = document.getElementsByClassName("delivery")
             for (var i = 0; i < deliveryPicker.length; i++) {
@@ -55,25 +68,39 @@
             }
         }
 
+        const validateEmail = (email) => {
+            return email.match(
+                /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            );
+        };
+
+        const validatePhone = (phone) => {
+            return phone.match(
+                /^[^0][0-9]{7}/
+            );
+        };
+
         function submitForm() {
             if ($("form #cusName").val() == "") {
                 alert("Please enter the customer name.");
                 $("form #cusName").focus();
                 return;
-            } else if ($("form #email").val() == "") {
-                alert("Please enter the customer email.");
-                $("form #cusAddress").focus();
+            } else if ($("form #email").val() == "" || !validateEmail($("form #email").val())) {
+                alert("Please enter the valid customer email.\nExample: example@domain.com");
+                $("form #email").focus();
+                return;
+            } else if ($("form #cusPhone").val() != "" && !validatePhone($("form #cusPhone").val())) {
+                alert("Please enter the valid phone number.\nExample: 12345678");
+                $("form #cusPhone").focus();
                 return;
             } else if ($("form #checkbox_delivery").is(":checked") == true) {
                 if ($("form #deliveryDate").val() == "") {
                     alert("Please enter the delivery date.");
-                    $("form #deliveryDate").focus();
                     return;
-                }else if ($("form #deliveryAddress").val() == "") {
+                } else if ($("form #deliveryAddress").val() == "") {
                     alert("Please enter the delievry address.");
-                    $("form #deliveryAddress").focus();
                     return;
-                } 
+                }
             }
             createOrder();
         }
@@ -108,7 +135,7 @@
     <?php include_once "./header.php"; ?>
     <div class="m-5 py-3 border-bottom">
         <span class="h2">Place Order</span>
-        <button class="btn btn-primary float-end" onclick="submitForm();">
+        <button class="btn btn-primary float-end" onclick="return submitForm();">
             <span class="text-white">Place</span>
         </button>
 
@@ -179,7 +206,7 @@
                                 $ois[] = array(
                                     "oiID" => $oiID,
                                     "qty" => $qty,
-                                    "soldPrice" => (double)$row["soldPrice"]
+                                    "soldPrice" => (float)$row["soldPrice"]
                                 );
                                 echo <<<EOD
                                     <tr>
@@ -221,7 +248,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="cusPhone" class="form-label">Customer Phone</label>
-                    <input type="number" class="form-control" id="cusPhone" placeholder="e.g 12345678" name="phoneNumber">
+                    <input type="number" inputmode="numeric" class="form-control" id="cusPhone" maxlength="8" minlength="8" placeholder="e.g 12345678" name="phoneNumber">
                 </div>
                 <div class="mb-3">
                     <label for="staticEmail" class="form-label">Staff ID</label>
@@ -235,16 +262,17 @@
 
                 <div class="mb-3 delivery" id="delivery-picker" style="display: none;">
                     <label for="delivery_date" class="form-label">Delivery Date</label>
-                    <input type="date" class="form-control" id="deliveryDate" require name="deliveryDate">
+                    <input type="date" class="form-control" id="deliveryDate" required name="deliveryDate">
                 </div>
                 <div class="mb-3 delivery" style="display: none;">
                     <label for="delivery_address" class="form-label">Delivery Address</label>
-                    <input type="text" class="form-control" id="deliveryAddress" require placeholder="1234 Main St" name="deliveryAddress">
+                    <input type="text" class="form-control" id="deliveryAddress" required placeholder="1234 Main St" name="deliveryAddress">
                 </div>
             </form>
         </div>
     </div>
-    
+
     <div w3-include-html="footer.html"></div>
-    </body>
+</body>
+
 </html>
