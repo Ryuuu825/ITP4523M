@@ -249,12 +249,11 @@
                             <?php 
                                 for($i = 1 ; $i <= count($rows) ; $i++)
                                 {
-                                    $price = $rows[$i-1]['soldPrice'] / $rows[$i-1]['orderQuantity'];
                                     echo <<<EOF
                                         <tr>
                                             <th scope="row">$i</th>
                                             <td>{$rows[$i-1]['itemName']}</td>
-                                            <td>$price</td>
+                                            <td>{$rows[$i-1]['soldPrice']}</td>
                                             <td>{$rows[$i-1]['orderQuantity']}</td>
                                         </tr>
                                     EOF;
