@@ -1,3 +1,11 @@
+<?php 
+    session_start();
+    if ($_SESSION["position"] != "Manager")
+    {
+        header("Location: ../401.html");
+        exit;
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,7 +23,6 @@
     </script>
     <script type="text/javascript">
         <?php
-        session_start();
         if (empty($_SESSION["username"])) {
             header("Location: ../401.html");
             exit;
@@ -192,7 +199,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-black" href="../account.php">
-                                Accounts
+                                Customer
                             </a>
                         </li>
                         <li class="nav-item">

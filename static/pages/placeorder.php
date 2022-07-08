@@ -314,7 +314,7 @@
 
                 <div class="row mt-4" id="items_list" style="overflow-y:auto">
                 <?php 
-                    $sql = "SELECT * FROM `Item`";
+                    $sql = "SELECT * FROM `Item` ORDER BY itemName ASC";
                     $res = mysqli_query($conn, $sql);
                     while($row = mysqli_fetch_assoc($res))
                     {

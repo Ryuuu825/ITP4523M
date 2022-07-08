@@ -76,11 +76,11 @@
                 $sql = "";
                 if (isset($_GET["email"]))
                 {
-                  $sql = "SELECT `Customer`.`customerName`, `Orders`.* FROM `Customer` INNER JOIN `Orders` ON `Orders`.`customerEmail` = `Customer`.`customerEmail` WHERE `Customer`.`customerEmail` = '".$_GET["email"]."'";
+                  $sql = "SELECT `Customer`.`customerName`, `Orders`.* FROM `Customer` INNER JOIN `Orders` ON `Orders`.`customerEmail` = `Customer`.`customerEmail` WHERE `Customer`.`customerEmail` = '".$_GET["email"]."' ORDER BY `Customer`.`customerName` ASC";
                 }
                 else
                 {
-                  $sql = "SELECT `Customer`.`customerName`, `Orders`.* FROM `Customer` INNER JOIN `Orders` ON `Orders`.`customerEmail` = `Customer`.`customerEmail`;";
+                  $sql = "SELECT `Customer`.`customerName`, `Orders`.* FROM `Customer` INNER JOIN `Orders` ON `Orders`.`customerEmail` = `Customer`.`customerEmail` ORDER BY `Customer`.`customerName` ASC;";
                 }
                 $result = $conn->query($sql);
                 if($result->num_rows > 0)

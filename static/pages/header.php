@@ -22,7 +22,7 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link text-black" href="./account.php">
-                    Accounts
+                    Customer
                 </a>
               </li>
               <li class="nav-item">

@@ -21,7 +21,8 @@
         INNER JOIN `Staff` ON `Orders`.`staffID` = `Staff`.`staffID` 
         INNER JOIN `Item` ON `ItemOrders`.`itemID` = `Item`.`itemID`
         WHERE `Orders`.`orderID` =  $id AND 
-            `Customer`.`customerEmail` = `Orders`.`customerEmail`;
+            `Customer`.`customerEmail` = `Orders`.`customerEmail`
+        ORDER BY `Item`.`itemName` ASC;
     ";
     
     $conn = get_db_connection();

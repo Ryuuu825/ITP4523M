@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
 		};
 	} else if (isset($_GET["name"])) {
 		$para = $_GET["name"];
-		$sql = "SELECT * FROM item WHERE itemName LIKE '%$para%'";
+		$sql = "SELECT * FROM item WHERE itemName LIKE '%$para%' ORDER BY itemName;";
 		$result = mysqli_query($conn, $sql);
 		$items = array();
 		if (mysqli_num_rows($result) == 0) {
