@@ -64,8 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
 		}
 		$rc = mysqli_fetch_assoc($result);
 		$nextid = $rc['nextid'];
-		$name = $itemName . "-" . $nextid;
-		$sql = "INSERT INTO item VALUES ('{$nextid}', '{$name}', '{$itemDescription}', '{$stockQuantity}', '{$price}')";
+		$sql = "INSERT INTO item VALUES ('{$nextid}', '{$itemName}', '{$itemDescription}', '{$stockQuantity}', '{$price}')";
 		$result = mysqli_query($conn, $sql);
 		if ($result) {
 			echo $nextid;
@@ -83,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
 		$result = mysqli_query($conn, $sql);
 		if (mysqli_num_rows($result) == 0) {
 			$sql = "DELETE FROM item WHERE itemID = '{$_GET['itemID']}'";
-			$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+			mysqli_query($conn, $sql) or die(mysqli_error($conn));
 		} else {
 			while ($row = mysqli_fetch_assoc($result)) {
 				$sql = "SELECT itemID FROM itemorders WHERE orderID = '{$row['orderID']}'";
