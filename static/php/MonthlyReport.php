@@ -49,5 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 			echo json_encode($rec);
 		};
 		mysqli_free_result($result);
+		mysqli_close($conn);
 	}
 }
+?>
