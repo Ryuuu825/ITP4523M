@@ -14,6 +14,23 @@
     1. Salesperson can place orders and manage customer accounts.
     2. Manager can manage items and review customer’s order.
 
+## Get Started
+
+1. Clone the project
+
+    ```bash
+    git clone git@github.com:Ryuuu825/ITP4523M-2022.git
+    ```
+
+2. import the database file `./createProjectDB.sql` to your mysql database
+3. change the database setting in `./web/php/conn.php`
+4. start the database
+5. start the server
+
+    ```bash
+    php -S localhost:8000
+    ```
+
 ## Screenshots
 
 - Place Orders
